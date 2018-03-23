@@ -1,0 +1,17 @@
+app:
+  image: mhart/alpine-node
+  volumes:
+    - ./app:/app
+  links:
+    - neo4j
+  ports:
+    - "13000:3000"
+  working_dir: /app
+  entrypoint: node uvector.js
+
+neo4j:
+  image: neo4j:3.0
+  ports:
+    - "17474:7474"
+  volumes:
+    - ./db/dbms:/data/dbms
