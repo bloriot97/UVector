@@ -1,6 +1,8 @@
 var express = require('express');
 var exphbs  = require('express-handlebars');
 
+var api = require('./routes/api.js');
+
 var app = express();
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
@@ -10,6 +12,8 @@ app.use('/static/', [
     express.static(__dirname + '/node_modules/materialize-css/dist/'),
     express.static(__dirname + '/static/'),
 ]);
+
+app.use('/api/v1', api)
 
 
 app.get('/', (req, res) => {
