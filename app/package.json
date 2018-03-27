@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "materialize-css": "^0.100.2",
     "node-neo4j": "^2.0.3"
   }
 }
