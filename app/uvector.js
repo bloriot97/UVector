@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 })
 
 // app.get('/login/', (req, res) => {
-//     res.redirect('https://CAS.utc.fr/cas/login?service=' + req.protocol + '://' + req.get('host') + '/test')
+//     res.redirect('https://CcASd.utc.fr/cas/login?service=' + req.protocol + '://' + req.get('host') + '/test')
 // })
 //
 // app.get('/test/', (req, res) => {
