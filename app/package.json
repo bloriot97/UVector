@@ -13,6 +13,7 @@
     "cas": "0.0.3",
     "express": "^4.16.3",
     "express-handlebars": "^3.0.0",
+    "lodash": "^4.17.5",
     "materialize-css": "^0.100.2",
     "node-neo4j": "^2.0.3",
     "npm": "^5.8.0"
