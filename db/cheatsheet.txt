@@ -1,0 +1,12 @@
+// Créer un lien entre une personne et une UV
+MATCH (a:Person {id:"loriotbe"}),(b:UV {code:"RO03"})
+CREATE (a)-[r:SUIT {codeSemestre:"P2018", GX:"GI02"}]->(b)
+
+// Créer une personne 
+CREATE (loriotbe:Person {id:"loriotbe", firstname:"Benjamin", lastname:"Loriot"})
+
+// Créer une UV
+CREATE (RO03:UV {code:"RO03", fullname:"Recherche opérationnelle, optimisation combinatoire"})
+
+
+MATCH ()-[r]->(uv) RETURN count(r), r.GX,uv 

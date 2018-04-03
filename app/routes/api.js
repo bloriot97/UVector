@@ -1,9 +1,11 @@
 var express = require('express'),
     router = express.Router();
 
-var Uv = require('../models/uv')
+var Uv = require('../models/uv');
 
-var config = require("../config/config")
+var config = require("../config/config");
+
+var neo4japi = require("../api/neo4japi");
 
 router.get("/", function(req, res) {
   res.status(200).send("API");
@@ -34,9 +36,12 @@ var getOffsetLimit = function (req, res, next){
 }
 
 router.get("/uvs", getOffsetLimit, function(req, res) {
-  Uv.getUvs(req.query.offset ,req.query.limit , (err, list) => {
-    return res.json( list );
-  })
+  neo4japi.getUvs().then( uvs => {
+      if (!uvs) return;
+      return res.json( uvs );
+    }
+  )
+
 });
 
 
