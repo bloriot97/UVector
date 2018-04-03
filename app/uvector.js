@@ -12,6 +12,8 @@ app.use('/static/', [
     express.static(__dirname + '/node_modules/materialize-css/dist/'),
     express.static(__dirname + '/node_modules/jquery/dist/'),
     express.static(__dirname + '/static/'),
+    express.static(__dirname + '/node_modules/vis/dist/'),
+
 ]);
 
 app.use('/api/v1', api)
@@ -60,5 +62,9 @@ app.get('/', (req, res) => {
 //         res.json(result.data);
 //     });
 // });
+
+
+
+
 
 app.listen(3000);
