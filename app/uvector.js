@@ -21,15 +21,32 @@ app.get('/', (req, res) => {
     res.render('index', {test: req.protocol + '://' + req.get('host') +req.originalUrl})
 })
 
-// app.get('/login/', (req, res) => {
-//     res.redirect('https://CcASd.utc.fr/cas/login?service=' + req.protocol + '://' + req.get('host') + '/test')
-// })
-//
-// app.get('/test/', (req, res) => {
-//     var CAS = require('cas');
-//     var cas = new CAS({base_url: 'https://cas.utc.fr/cas/serviceValidate?service=', service: req.protocol + '://' + req.get('host') +req.originalUrl});
-//
-// })
+app.get('/connexion/', (req, res) => {
+    res.redirect('https://cas.utc.fr/cas/login?service=' + req.protocol + '://' + req.get('host') + '/test')
+})
+
+
+
+app.get('/test/', (req, res) => {
+    var CAS = require('cas');
+    var cas = new CAS({base_url: 'https://cas.utc.fr/cas/', service: 'http://' + req.get('host') +'/test'});
+    var ticket = req.param('ticket');
+    if (ticket) {
+      cas.validate(ticket, function(err, status, username) {
+        if (err) {
+          console.log('err')
+          res.send({error: err});
+        } else {
+          // Log the user in
+          console.log('ok')
+          res.send({status: status, username: username});
+        }
+      });
+    } else {
+      res.redirect('/');
+    }
+})
+
 //
 // var neo4j = require('node-neo4j');
 // var db = new neo4j('http://neo4j:test@neo4j:7474');
