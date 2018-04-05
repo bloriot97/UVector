@@ -44,5 +44,13 @@ router.get("/uvs", getOffsetLimit, function(req, res) {
 
 });
 
+router.get("/graphs/branches", function(req, res) {
+  neo4japi.getGraphBranches().then( graph => {
+      if (!graph) return;
+      return res.json( graph );
+    }
+  )
+});
+
 
 module.exports = router;
