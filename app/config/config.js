@@ -7,5 +7,7 @@ module.exports = {
     user: "neo4j",
     password: "ic05",
     port: "7687"
-  }
+  },
+  branches: ["TC","GI","IM","GU","GB","GP"],
+  types: ["CS", "TM", "TSH"]
 };

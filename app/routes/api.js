@@ -1,6 +1,8 @@
 var express = require('express'),
     router = express.Router();
 
+var _ = require('lodash');
+
 var Uv = require('../models/uv');
 
 var config = require("../config/config");
@@ -45,7 +47,23 @@ router.get("/uvs", getOffsetLimit, function(req, res) {
 });
 
 router.get("/graphs/branches", function(req, res) {
-  neo4japi.getGraphBranches().then( graph => {
+
+  if (req.filter === undefined) {
+    req.filter = {} ;
+  }
+
+  if ( req.query.types !== undefined ){
+    req.filter.types = _.intersection(_.split(req.query.types, ','), config.types);
+  } else {
+    req.filter.types = config.types;
+  }
+  if ( req.query.branches !== undefined ){
+    req.filter.branches = _.intersection( _.split(req.query.branches, ','), config.branches);
+  } else {
+    req.filter.branches = config.branches;
+  }
+
+  neo4japi.getGraphBranches(req.filter).then( graph => {
       if (!graph) return;
       return res.json( graph );
     }

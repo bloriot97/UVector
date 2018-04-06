@@ -1,7 +1,7 @@
 const config = require("../config/config")
 
 const neo4j = require('neo4j-driver').v1;
-
+var _ = require("lodash");
 const Uv = require("../models/uv");
 
 const driver = neo4j.driver("bolt://neo4j:" + config.neo4j.port, neo4j.auth.basic( config.neo4j.user, config.neo4j.password));
@@ -25,11 +25,13 @@ function getUvs() {
     });
 }
 
-function getGraphBranches() {
+function getGraphBranches(filter) {
+
   var session = driver.session();
   return session
     .run(
-      "MATCH ()-[r]->(uv) RETURN count(r), r.GX,uv")
+      "MATCH ()-[r]->(uv) WHERE uv.type IN {types} AND left(r.GX,2) IN {branches} RETURN count(r), r.GX,uv",
+      filter)
     .then(result => {
       session.close();
       var nodes = [];
