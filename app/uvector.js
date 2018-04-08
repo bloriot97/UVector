@@ -1,11 +1,20 @@
 var express = require('express');
 var exphbs  = require('express-handlebars');
+var session = require('express-session');
 
 var api = require('./routes/api.js');
 
 var app = express();
 
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.use(session({ secret: 'UVectorGivesYouDirection', cookie: { maxAge: 60000 }}))
+
+var hbs = exphbs.create({
+    helpers: {
+        ifnot: function(cond, opt) { return !cond ? opt.fn(this) : opt.inverse(this) }
+    }
+})
+
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 app.use('/static/', [
@@ -16,35 +25,36 @@ app.use('/static/', [
 
 app.use('/api/v1', api)
 
-
 app.get('/', (req, res) => {
-    res.render('index', {test: req.protocol + '://' + req.get('host') +req.originalUrl})
+    res.render('index', {login: req.session.user, logged: req.session.user? true: false})
 })
 
-app.get('/connexion/', (req, res) => {
-    res.redirect('https://cas.utc.fr/cas/login?service=' + req.protocol + '://' + req.get('host') + '/test')
-})
-
-
-
-app.get('/test/', (req, res) => {
-    var CAS = require('cas');
-    var cas = new CAS({base_url: 'https://cas.utc.fr/cas/', service: 'http://' + req.get('host') +'/test'});
-    var ticket = req.param('ticket');
-    if (ticket) {
-      cas.validate(ticket, function(err, status, username) {
-        if (err) {
-          console.log('err')
-          res.send({error: err});
-        } else {
-          // Log the user in
-          console.log('ok')
-          res.send({status: status, username: username});
-        }
-      });
+app.get('/login/', (req, res) => {
+    if (req.session.user == undefined && req.param('ticket') === undefined) {
+        res.redirect('https://cas.utc.fr/cas/login?service=' + req.protocol + '://' + req.get('host') + '/login')
     } else {
-      res.redirect('/');
+        var CAS = require('./config/cas');
+        var cas = new CAS({base_url: 'https://cas.utc.fr/cas/', service: 'http://' + req.get('host') +'/login'});
+        var ticket = req.param('ticket');
+        if (ticket) {
+            cas.validate(ticket, function(err, status, username) {
+                if (err) {
+                    res.send({error: err});
+                } else {
+                    console.log(username + " logged in")
+                    req.session.user = username;
+                    res.redirect('/');
+                }
+            });
+        } else {
+            res.redirect('/');
+        }
     }
+})
+
+app.get('/logout/', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
 })
 
 //
