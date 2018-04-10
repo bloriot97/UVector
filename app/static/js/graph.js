@@ -123,7 +123,7 @@ function updateGraph() {
     JSONadress = "/api/v1/graphs/branches";
   }
   $.getJSON( JSONadress, function( data ) {
-    var container = document.getElementById('mynetwork');
+    var container = document.getElementById('vis-network');
     var options = {
         nodes: {
             shape: 'dot',
