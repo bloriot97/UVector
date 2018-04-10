@@ -25,6 +25,24 @@ function getUvs() {
     });
 }
 
+function getUserUvs(userid) {
+  var session = driver.session();
+  console.log(userid)
+  return session
+    .run("MATCH (p:Person {id:'" + userid +"'})-[r:SUIT]->(uv:UV) RETURN r.GX,r.codeSemestre,uv.code")
+    .then(result => {
+      session.close();
+      return res = result.records.map(record => {
+        return {uv :record.get('uv.code'), gx: record.get('r.GX'), semestre: record.get('r.codeSemestre')} ;
+      })
+    })
+    .catch(error => {
+      session.close();
+      console.log(error)
+      throw error;
+    });
+}
+
 function getGraphBranches(filter) {
 
   var session = driver.session();
@@ -69,3 +87,4 @@ function getGraphBranches(filter) {
 
 exports.getUvs = getUvs;
 exports.getGraphBranches = getGraphBranches;
+exports.getUserUvs = getUserUvs;
