@@ -12,13 +12,6 @@ Uv.prototype.sanitize = function (data) {
   return _.pick(_.defaults(data, schema), _.keys(schema));
 }
 
-Uv.getUvs = function(offset, limit, callback){
-  /*
-    TODO implémenter User.getUsers
-  */
-  callback(null, new Uv({}));
-}
-
 Uv.prototype.data = {}
 
 module.exports = Uv;

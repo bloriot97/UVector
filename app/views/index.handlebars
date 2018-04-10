@@ -8,6 +8,14 @@
     <link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css"  media="screen,projection"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <!-- ================================================================== -->
+    <!-- =========================  Importations ========================== -->
+    <!-- ================================================================== -->
+
+    <script type="text/javascript" src="/static/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/vis.js"></script>
+    <script type="text/javascript" src="/static/js/graph.js"></script>
+    <script type="text/javascript" src="/static/js/materialize.min.js"></script>
 </head>
 
 <body class="grey lighten-5">
@@ -39,11 +47,26 @@
         </nav>
     </div>
 
-    <div class="row">
+    <!-- ================================================================== -->
+    <!-- ============================  Graph ============================== -->
+    <!-- ================================================================== -->
 
-        <!-- ================================================================== -->
-        <!-- ====================  Left and right menus ======================= -->
-        <!-- ================================================================== -->
+
+    <div class="row" id="mynetwork">
+      <div class="vis-network">
+        <canvas>
+
+        </canvas>
+      </div>
+    </div>
+
+
+    <!-- ================================================================== -->
+    <!-- ====================  Left and right menus ======================= -->
+    <!-- ================================================================== -->
+
+
+    <div class="row" id="menus">
 
         <!-- ===== Left Menu ===== -->
         <div class="col s3 m3 l2">
@@ -71,63 +94,71 @@
                         <div class="collapsible-body" id="menu_filtres_body">
 
 
-                            <div class="row">
-                                <div class="container section">  <!--class section is for top and bottom padding-->
-                                    <label class="truncate"><b>Catégories</b></label>
-                                </div>
-                                <div class="container center-align">
-                                    <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher toutes les catégories" id="node_category_All"><i class="material-icons center-align">visibility_off</i></a></span>
-                                    <span><a class="btn-floating btn-flat center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les CS" id="node_category_CS">CS</a></span>
-                                    <span><a class="btn-floating btn-flat center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les TM" id="node_category_TM">TM</a></span>
+                              <div class="row">
+                                  <div class="container section">  <!--class section is for top and bottom padding-->
+                                      <label class="truncate"><b>Catégories</b></label>
+                                  </div>
+                                  <div class="container center-align">
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les catégories" id="node_category_All_hide" onclick="reverse(false, false, false, false, false, false, false, false, false, true)"><i class="material-icons center-align">visibility_off</i></a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les catégories" id="node_category_All_show" onclick="reverse(false, false, false, false, false, false, false, false, false, true)"><i class="material-icons center-align">visibility_off</i></a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les CS" id="node_category_CS" onclick="reverse(false, false, false, false, false, false, false, true, false, false)">CS</a></span>
+                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les CS" id="node_category_CS_disabled" onclick="reverse(false, false, false, false, false, false, false, true, false, false)">CS</a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les TM" id="node_category_TM" onclick="reverse(false, false, false, false, false, false, true, false, false, false)">TM</a></span>
+                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les TM" id="node_category_TM_disabled" onclick="reverse(false, false, false, false, false, false, true, false, false, false)">TM</a></span>
 
-                                </div>
-                            </div>
+                                  </div>
+                              </div>
 
 
-                            <div class="row">
-                                <div class="container section">  <!--class section is for top and bottom padding and container is for left end right padding -->
-                                    <label class="truncate"><b>Branches</b><br/></label>
-                                </div>
-                                <div class="center-align container">
-                                    <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher toutes les branches" id="node_branch_All"><i class="material-icons center-align">visibility_off</i></a></span>
-                                    <span><a class="btn-floating btn-flat center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le TC" id="node_branch_TC">TC</a></span>
-                                    <span><a class="btn-floating btn-flat center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GSU" id="node_branch_GSU">GSU</a></span>
-                                    <span><a class="btn-floating btn-flat center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GP" id="node_branch_GP">GP</a></span>
-                                    <span><a class="btn-floating btn-flat center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GB" id="node_branch_GB">GB</a></span>
-                                    <span><a class="btn-floating btn-flat center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GM" id="node_branch_GM">GM</a></span>
-                                    <span><a class="btn-floating btn-flat center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GSM" id="node_branch_GSM">GSM</a></span>
-                                    <span><a class="btn-floating btn-flat center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI">GI</a></span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="collapsible-header" id="menu_parcours_header"><i class="material-icons">timeline</i><b class="truncate">Mes parcours</b></div>
-                        <div class="collapsible-body">
-                            <ul class="collection">
-                                <li class="collection-item truncate"><div>Parcours 1<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></div></li>
-                                <li class="collection-item active truncate"><div>Parcours 2<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></div></li>
-                                <li class="collection-item"><div class="truncate">Ajouter un nouveau parcours<a href="#!" class="secondary-content"><i class="material-icons">playlist_add</i></a></div></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                              <div class="row">
+                                  <div class="container section">  <!--class section is for top and bottom padding and container is for left end right padding -->
+                                      <label class="truncate"><b>Branches</b><br/></label>
+                                  </div>
+                                  <div class="center-align container">
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les branches" id="node_branch_All_hide" onclick="reverse(false, false, false, false, false, false, false, false, true, false)"><i class="material-icons center-align">visibility_off</i></a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les branches" id="node_branch_All_show" onclick="reverse(false, false, false, false, false, false, false, false, true, false)"><i class="material-icons center-align">visibility_off</i></a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le TC" id="node_branch_TC" onclick="reverse(false, false, false, false, false, true, false, false, false, false)">TC</a></span>
+                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le TC" id="node_branch_TC_disabled" onclick="reverse(false, false, false, false, false, true, false, false, false, false)">TC</a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GSU" id="node_branch_GU" onclick="reverse(false, true, false, false, false, false, false, false, false, false)">GU</a></span>
+                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GSU" id="node_branch_GU_disabled" onclick="reverse(false, true, false, false, false, false, false, false, false, false)">GU</a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GP" id="node_branch_GP" onclick="reverse(false, false, false, true, false, false, false, false, false, false)">GP</a></span>
+                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GP" id="node_branch_GP_disabled" onclick="reverse(false, false, false, true, false, false, false, false, false, false)">GP</a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GB" id="node_branch_GB" onclick="reverse(false, false, true, false, false, false, false, false, false, false)">GB</a></span>
+                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GB" id="node_branch_GB_disabled" onclick="reverse(false, false, true, false, false, false, false, false, false, false)">GB</a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GM" id="node_branch_IM" onclick="reverse(false, false, false, false, true, false, false, false, false, false)">IM</a></span>
+                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GM" id="node_branch_IM_disabled" onclick="reverse(false, false, false, false, true, false, false, false, false, false)">IM</a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI" onclick="reverse(true, false, false, false, false, false, false, false, false, false)">GI</a></span>
+                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI_disabled" onclick="reverse(true, false, false, false, false, false, false, false, false, false)">GI</a></span>
+                                  </div>
+                              </div>
+                          </div>
+                      </li>
+                      <li>
+                          <div class="collapsible-header" id="menu_parcours_header"><i class="material-icons">timeline</i><b class="truncate">Mes parcours</b></div>
+                          <div class="collapsible-body">
+                              <ul class="collection">
+                                  <li class="collection-item truncate"><div>Parcours 1<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></div></li>
+                                  <li class="collection-item active truncate"><div>Parcours 2<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></div></li>
+                                  <li class="collection-item"><div class="truncate">Ajouter un nouveau parcours<a href="#!" class="secondary-content"><i class="material-icons">playlist_add</i></a></div></li>
+                              </ul>
+                          </div>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+
+
+          <!-- ===== Right Menu ===== -->
+          <!-- <div class="col s3 m3 l3 push-s6 push-m6 push-l7">
+              <div class="card" id="right-menu">
+                  <div class="card" id="right-menu-infoUV">
+                      <ul class="collection"></ul>
+                  </div>
+              </div> -->
+
         </div>
 
-        <!-- ===== Right Menu ===== -->
-        <!-- <div class="col s3 m3 l3 push-s6 push-m6 push-l7">
-            <div class="card" id="right-menu">
-                <div class="card" id="right-menu-infoUV">
-                    <ul class="collection"></ul>
-                </div>
-            </div>
-        </div>
 
-
-
-        <div id="graph-container"></div> -->
-    </div>
 
 
 
@@ -230,19 +261,136 @@
 
 
     <!-- ================================================================== -->
-    <!-- =========================  Importations ========================== -->
-    <!-- ================================================================== -->
-
-    <script type="text/javascript" src="/static/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/materialize.min.js"></script>
-
-    <!-- ================================================================== -->
     <!-- ====================  JavaScript inline ========================== -->
     <!-- ================================================================== -->
 
     <script type="text/javascript">
     // Init the select in cards
     $(document).ready(function(){
+        updateGraph();
+        $('#node_branch_GI_disabled').hide();
+        $('#node_branch_GU_disabled').hide();
+        $('#node_branch_GB_disabled').hide();
+        $('#node_branch_GP_disabled').hide();
+        $('#node_branch_IM_disabled').hide();
+        $('#node_branch_TC_disabled').hide();
+        $('#node_category_TM_disabled').hide();
+        $('#node_category_CS_disabled').hide();
+        $('#node_branch_All_show').hide();
+        $('#node_category_All_show').hide();
+        // To disable buttons when clicking
+        $('#node_branch_GI').click(function(){
+          $('#node_branch_GI').hide();
+          $('#node_branch_GI_disabled').show();
+        });
+        $('#node_branch_GI_disabled').click(function(){
+          $('#node_branch_GI_disabled').hide();
+          $('#node_branch_GI').show();
+        });
+        $('#node_branch_GU').click(function(){
+          $('#node_branch_GU').hide();
+          $('#node_branch_GU_disabled').show();
+        });
+        $('#node_branch_GU_disabled').click(function(){
+          $('#node_branch_GU_disabled').hide();
+          $('#node_branch_GU').show();
+        });
+        $('#node_branch_GB').click(function(){
+          $('#node_branch_GB').hide();
+          $('#node_branch_GB_disabled').show();
+        });
+        $('#node_branch_GB_disabled').click(function(){
+          $('#node_branch_GB_disabled').hide();
+          $('#node_branch_GB').show();
+        });
+        $('#node_branch_GP').click(function(){
+          $('#node_branch_GP').hide();
+          $('#node_branch_GP_disabled').show();
+        });
+        $('#node_branch_GP_disabled').click(function(){
+          $('#node_branch_GP_disabled').hide();
+          $('#node_branch_GP').show();
+        });
+        $('#node_branch_IM').click(function(){
+          $('#node_branch_IM').hide();
+          $('#node_branch_IM_disabled').show();
+        });
+        $('#node_branch_IM_disabled').click(function(){
+          $('#node_branch_IM_disabled').hide();
+          $('#node_branch_IM').show();
+        });
+        $('#node_branch_TC').click(function(){
+          $('#node_branch_TC').hide();
+          $('#node_branch_TC_disabled').show();
+        });
+        $('#node_branch_TC_disabled').click(function(){
+          $('#node_branch_TC_disabled').hide();
+          $('#node_branch_TC').show();
+        });
+        $('#node_category_CS').click(function(){
+          $('#node_category_CS').hide();
+          $('#node_category_CS_disabled').show();
+        });
+        $('#node_category_CS_disabled').click(function(){
+          $('#node_category_CS_disabled').hide();
+          $('#node_category_CS').show();
+        });
+        $('#node_category_TM').click(function(){
+          $('#node_category_TM').hide();
+          $('#node_category_TM_disabled').show();
+        });
+        $('#node_category_TM_disabled').click(function(){
+          $('#node_category_TM_disabled').hide();
+          $('#node_category_TM').show();
+        });
+        $('#node_category_All_hide').click(function(){
+          $('#node_category_All_hide').hide();
+          $('#node_category_All_show').show();
+          $('#node_category_TM').hide();
+          $('#node_category_TM_disabled').show();
+          $('#node_category_CS').hide();
+          $('#node_category_CS_disabled').show();
+        });
+        $('#node_category_All_show').click(function(){
+          $('#node_category_All_show').hide();
+          $('#node_category_All_hide').show();
+          $('#node_category_TM').show();
+          $('#node_category_TM_disabled').hide();
+          $('#node_category_CS').show();
+          $('#node_category_CS_disabled').hide();
+        });
+        $('#node_branch_All_hide').click(function(){
+          $('#node_branch_All_show').show();
+          $('#node_branch_All_hide').hide();
+          $('#node_branch_TC').hide();
+          $('#node_branch_TC_disabled').show();
+          $('#node_branch_GI').hide();
+          $('#node_branch_GI_disabled').show();
+          $('#node_branch_GU').hide();
+          $('#node_branch_GU_disabled').show();
+          $('#node_branch_GB').hide();
+          $('#node_branch_GB_disabled').show();
+          $('#node_branch_GP').hide();
+          $('#node_branch_GP_disabled').show();
+          $('#node_branch_IM').hide();
+          $('#node_branch_IM_disabled').show();
+        });
+        $('#node_branch_All_show').click(function(){
+          $('#node_branch_All_show').hide();
+          $('#node_branch_All_hide').show();
+          $('#node_branch_TC').show();
+          $('#node_branch_TC_disabled').hide();
+          $('#node_branch_GI').show();
+          $('#node_branch_GI_disabled').hide();
+          $('#node_branch_GU').show();
+          $('#node_branch_GU_disabled').hide();
+          $('#node_branch_GB').show();
+          $('#node_branch_GB_disabled').hide();
+          $('#node_branch_GP').show();
+          $('#node_branch_GP_disabled').hide();
+          $('#node_branch_IM').show();
+          $('#node_branch_IM_disabled').hide();
+        });
         // Hidding right panel
         $('#right-menu').hide();
 
@@ -335,40 +483,41 @@
         });
 
 
-        // Some new shortcuts
-        window.addEventListener("keydown",function(e){
-            // CTRL + F
-            if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)){
-                e.preventDefault();
-                $('#node-to-search').focus();
-            }
 
-            // CTRL + 0
-            if(e.ctrlKey && e.keyCode === 96){
-                e.preventDefault();
-                fitSize(activeGraph);
-            }
-
-            // CTRL + +
-            if(e.ctrlKey && e.keyCode === 107){
-                e.preventDefault();
-                zoomIn(activeGraph);
-            }
-
-            // CTRL + -
-            if(e.ctrlKey && e.keyCode === 109){
-                e.preventDefault();
-                zoomOut(activeGraph);
-            }
-
-            // Escape
-            if(e.keyCode === 27)
-            unselectAll(activeGraph);
-
-            // CTRL + A
-            if(e.ctrlKey && e.keyCode == 65)
-            e.preventDefault();
-        });
+        // // Some new shortcuts
+        // window.addEventListener("keydown",function(e){
+        //     // CTRL + F
+        //     if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)){
+        //         e.preventDefault();
+        //         $('#node-to-search').focus();
+        //     }
+        //
+        //     // CTRL + 0
+        //     if(e.ctrlKey && e.keyCode === 96){
+        //         e.preventDefault();
+        //         fitSize(activeGraph);
+        //     }
+        //
+        //     // CTRL + +
+        //     if(e.ctrlKey && e.keyCode === 107){
+        //         e.preventDefault();
+        //         zoomIn(activeGraph);
+        //     }
+        //
+        //     // CTRL + -
+        //     if(e.ctrlKey && e.keyCode === 109){
+        //         e.preventDefault();
+        //         zoomOut(activeGraph);
+        //     }
+        //
+        //     // Escape
+        //     if(e.keyCode === 27)
+        //     unselectAll(activeGraph);
+        //
+        //     // CTRL + A
+        //     if(e.ctrlKey && e.keyCode == 65)
+        //     e.preventDefault();
+        // });
     });
     </script>
 

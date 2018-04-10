@@ -1,9 +1,13 @@
 var express = require('express'),
     router = express.Router();
 
-var Uv = require('../models/uv')
+var _ = require('lodash');
 
-var config = require("../config/config")
+var Uv = require('../models/uv');
+
+var config = require("../config/config");
+
+var neo4japi = require("../api/neo4japi");
 
 router.get("/", function(req, res) {
   res.status(200).send("API");
@@ -34,9 +38,36 @@ var getOffsetLimit = function (req, res, next){
 }
 
 router.get("/uvs", getOffsetLimit, function(req, res) {
-  Uv.getUvs(req.query.offset ,req.query.limit , (err, list) => {
-    return res.json( list );
-  })
+  neo4japi.getUvs().then( uvs => {
+      if (!uvs) return;
+      return res.json( uvs );
+    }
+  )
+
+});
+
+router.get("/graphs/branches", function(req, res) {
+
+  if (req.filter === undefined) {
+    req.filter = {} ;
+  }
+
+  if ( req.query.types !== undefined ){
+    req.filter.types = _.intersection(_.split(req.query.types, ','), config.types);
+  } else {
+    req.filter.types = config.types;
+  }
+  if ( req.query.branches !== undefined ){
+    req.filter.branches = _.intersection( _.split(req.query.branches, ','), config.branches);
+  } else {
+    req.filter.branches = config.branches;
+  }
+
+  neo4japi.getGraphBranches(req.filter).then( graph => {
+      if (!graph) return;
+      return res.json( graph );
+    }
+  )
 });
 
 

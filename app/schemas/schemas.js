@@ -1,6 +1,6 @@
 module.exports = {
   uv: {
-    id: null,
+    code: null,
     fullname: null,
     description: null
   }
