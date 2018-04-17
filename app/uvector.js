@@ -16,6 +16,15 @@ app.use('/static/', [
 
 app.use('/api/v1', api)
 
+function setupDB(req, res){
+  var sqlreader = require('./parser/sqlreader');
+
+  sqlreader.setupDB();
+
+  res.status(200).send("setup")
+}
+
+app.use('/setup/db', setupDB)
 
 app.get('/', (req, res) => {
     res.render('index', {test: req.protocol + '://' + req.get('host') +req.originalUrl})
