@@ -124,7 +124,7 @@ function updateGraph() {
   else {
     JSONadress = "/api/v1/graphs/branches";
   }
-  JSONadress = "/static/js/branches.json"
+  //JSONadress = "/static/js/branches.json"
   $.getJSON( JSONadress, function( data ) {
     var container = document.getElementById('mynetwork');
     var options = {

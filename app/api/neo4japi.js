@@ -83,7 +83,7 @@ function getGraphBranches(filter) {
           var y_coord = 0
           if (  gx.substring(0,2) == "TC" ){
             x_coord = 0
-            y_coord = k * 300
+            y_coord = (7-k) * 300
 
           } else {
             size = k * 300 + 300
@@ -110,7 +110,7 @@ function getGraphBranches(filter) {
         }
 
         if ( uv[record.get('uv').properties.code] === undefined){
-          nodes.push( {id: length, "label": record.get('uv').properties.code, "group": groupe[record.get('uv').properties.branche]} )
+          nodes.push( {id: length, "label": record.get('uv').properties.code, size: 30 , "group": groupe[record.get('uv').properties.branche]} )
           edges.push( {"from": length, "to": genie[gx], value: record.get("count(r)").low} )
           uv[record.get('uv').properties.code] = length;
         } else {
