@@ -50,6 +50,24 @@ function insererUv(uv){
     });
 }
 
+function changeGXNames(from , to){
+  var session = driver.session();
+  return session
+    .run(
+      "MATCH ()-[r:SUIT]->() WHERE r.GX =~ '" + from + ".*' SET r.GX = replace(r.GX, '"+ from "', '" + to + "') return null")
+    .then(result => {
+      session.close();
+
+      return result;
+
+    })
+    .catch(error => {
+      session.close();
+      throw error;
+    });
+
+}
+
 function insererSuit(suit){
 
   var session = driver.session();
@@ -78,7 +96,7 @@ function insererRec(tab, i, query, callback, pas = 1 ){
     Promise.all(promises)
     .then( (results) => {
       session.close();
-      console.log('"' + query + '"' + (i+1) + "/" + tab.length)      
+      console.log('"' + query + '"' + (i+1) + "/" + tab.length)
       insererRec(tab, i+pas, query, callback, pas);
     })
     .catch( (error) => {
@@ -111,6 +129,7 @@ function dropDB(){
 
 }
 
+
 function inserMulti(tab, n, query, callback){
   for ( var i = 0; i < n; i ++){
     insererRec(tab, i, query, callback, n);
@@ -126,6 +145,14 @@ function setupDB(){
     //insererListeSuit();
 
   });
+
+}
+
+function traitement(){
+  changeGXNames("GSU", "GU")
+  changeGXNames("GSM", "IM")
+  changeGXNames("GM", "IM")
+
 
 }
 
