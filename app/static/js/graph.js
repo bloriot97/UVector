@@ -1,5 +1,7 @@
 // Button variables
 
+var network;
+
 var TCBtn = true;
 var CSBtn = true;
 var TMBtn = true;
@@ -122,12 +124,16 @@ function updateGraph() {
   else {
     JSONadress = "/api/v1/graphs/branches";
   }
+  JSONadress = "/static/js/branches.json"
   $.getJSON( JSONadress, function( data ) {
     var container = document.getElementById('mynetwork');
     var options = {
         nodes: {
             shape: 'dot',
             size: 16
+        },
+        edges: {
+          smooth: {type: 'continuous'}
         },
         physics: {
             forceAtlas2Based: {
@@ -136,13 +142,25 @@ function updateGraph() {
                 springLength: 230,
                 springConstant: 0.18
             },
-            maxVelocity: 146,
+            maxVelocity: 150,
             solver: 'forceAtlas2Based',
             timestep: 0.35,
-            stabilization: {iterations: 150}
-        }
+            stabilization: {iterations: 0}
+        },
+        interaction: {
+        hideEdgesOnDrag: true,
+        // tooltipDelay: 200,
+        // dragNodes: false,// do not allow dragging nodes
+        // zoomView: true, // do not allow zooming
+        // dragView: true  // do not allow dragging
+      }
     };
-    var network = new vis.Network(container, data, options);
+    var dataNodes = {
+      "nodes": data['nodes'], "edges": data['edges']
+    };
+    network = new vis.Network(container, dataNodes, options);
+    var dataBranches = data['genie'];
+    network.moveNode(dataBranches['GI01'],200,200);
   });
   console.log("Types=",filterType,"Branches=",filterBranch);
 };
