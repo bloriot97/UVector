@@ -54,7 +54,7 @@ function changeGXNames(from , to){
   var session = driver.session();
   return session
     .run(
-      "MATCH ()-[r:SUIT]->() WHERE r.GX =~ '" + from + ".*' SET r.GX = replace(r.GX, '"+ from "', '" + to + "') return null")
+      "MATCH ()-[r:SUIT]->() WHERE r.GX =~ '" + from + ".*' SET r.GX = replace(r.GX, '" + from + "', '" + to + "') return null")
     .then(result => {
       session.close();
 
@@ -66,6 +66,52 @@ function changeGXNames(from , to){
       throw error;
     });
 
+}
+
+function calcGX(){
+  var session = driver.session();
+  return session
+    .run(
+      "MATCH ()-[r]->(uv) WHERE uv.type <> 'TSH' AND left(r.GX, 2) IN ['TC','GI','IM','GU','GB','GP'] WITH LEFT(r.GX, 2) as branche, uv as uv WITH [count(branche), branche] as branche, uv as uv ORDER BY branche[0] DESC WITH collect(branche) as branches, uv as uv SET uv.branche = branches[0][1]")
+    .then(result => {
+      session.close();
+      calcGX2()
+      return result;
+    })
+    .catch(error => {
+      session.close();
+      throw error;
+    });
+}
+
+function calcGX2(){
+  var session = driver.session();
+  return session
+    .run(
+      "MATCH ()-[r]->(uv) WHERE uv.type <> 'TSH' AND left(r.GX, 2) IN ['TC','GI','IM','GU','GB','GP'] AND uv.degree > 100 WITH LEFT(r.GX, 2) as branche, uv as uv WITH toFloat(count(branche))/toFloat(uv.degree) as prop, branche as branche, uv as uv WITH stDev(prop) as dev,collect([prop, branche]) as prop, count(prop) as cnt, uv as uv WHERE cnt > 2 and dev < 0.2 SET uv.branche = 'GX'")
+    .then(result => {
+      session.close();
+      return result;
+    })
+    .catch(error => {
+      session.close();
+      throw error;
+    });
+}
+
+function calcDeg(){
+  var session = driver.session();
+  return session
+    .run(
+      "MATCH (p:Person)-[r:SUIT]->(uv:UV) WITH count(r) as cnt, uv.code as code MATCH (uv:UV {code: code}) SET uv.degree = cnt ")
+    .then(result => {
+      session.close();
+      return result;
+    })
+    .catch(error => {
+      session.close();
+      throw error;
+    });
 }
 
 function insererSuit(suit){
@@ -140,7 +186,12 @@ function setupDB(){
   dropDB().then( () => {
     inserMulti(uvs, 5,"CREATE (:UV {code: {codeUV} , fullname: {nom} , type: {categorie}})");
     inserMulti(etus, 5, "CREATE (:Person {id: {id_etu} })", function() {
-      inserMulti(suit, 20, "MATCH (a:Person {id: {id_etu} }),(b:UV {code: {uv} }) CREATE (a)-[r:SUIT {codeSemestre: {semestre} , GX: {gx} }]->(b)")
+      inserMulti(suit, 20, "MATCH (a:Person {id: {id_etu} }),(b:UV {code: {uv} }) CREATE (a)-[r:SUIT {codeSemestre: {semestre} , GX: {gx} }]->(b)", function(){
+        changeGXNames("GSU", "GU")
+        changeGXNames("GSM", "IM")
+        changeGXNames("GM", "IM")
+        calcDeg()
+      })
     })
     //insererListeSuit();
 
@@ -148,13 +199,7 @@ function setupDB(){
 
 }
 
-function traitement(){
-  changeGXNames("GSU", "GU")
-  changeGXNames("GSM", "IM")
-  changeGXNames("GM", "IM")
-
-
-}
 
 
 exports.setupDB = setupDB;
+exports.calcGX = calcGX;
