@@ -118,7 +118,7 @@ function getGraphBranches(filter) {
         }
         length = nodes.length;
       })
-      return {nodes: nodes, edges: edges}
+      return {nodes: nodes, edges: edges, genie: genie}
     })
     .catch(error => {
       session.close();
