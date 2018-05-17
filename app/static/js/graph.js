@@ -127,6 +127,7 @@ function updateGraph() {
   //JSONadress = "/static/js/branches.json"
   $.getJSON( JSONadress, function( data ) {
     var container = document.getElementById('mynetwork');
+    console.log(data.groupes)
     var options = {
         nodes: {
             shape: 'dot',
@@ -135,6 +136,7 @@ function updateGraph() {
         edges: {
           smooth: {type: 'continuous'}
         },
+        groups: data.groupes,
         physics: {
             forceAtlas2Based: {
                 gravitationalConstant: -26,
