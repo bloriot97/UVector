@@ -44,7 +44,6 @@ function getUserUvs(userid) {
 }
 
 function getGraphBranches(filter) {
-
   var session = driver.session();
   return session
     .run(
@@ -59,6 +58,11 @@ function getGraphBranches(filter) {
       var uv = {};
 
       var groupe = {'TC': 1, 'IM': 2, 'GU': 3, 'GB': 4, 'GI': 5, 'GP': 6, 'GX': 0}
+
+      config.branches.forEach( GX => {
+        groupe[GX] = {};
+        groupe[GX].color = {background: config.branches_color[GX]}
+      })
 
       var length = 0;
       result.records.map(record => {
@@ -91,7 +95,7 @@ function getGraphBranches(filter) {
             y_coord = -Math.sin((n-1)/(4) * 3.14) * size
 
           }
-          nodes.push( {id: length, "label": gx, "group": groupe[gx.substring(0,2)], x:x_coord, y:y_coord, fixed: true, size: 50 } )
+          nodes.push( {id: length, "label": gx, "group": gx.substring(0,2), x:x_coord, y:y_coord, fixed: true, size: 50, "shape": "box", "font": {"size":50} } )
 
 
           length = nodes.length;
@@ -110,15 +114,15 @@ function getGraphBranches(filter) {
         }
 
         if ( uv[record.get('uv').properties.code] === undefined){
-          nodes.push( {id: length, "label": record.get('uv').properties.code, size: 30 , "group": groupe[record.get('uv').properties.branche]} )
-          edges.push( {"from": length, "to": genie[gx], value: record.get("count(r)").low} )
+          nodes.push( {id: length, "label": record.get('uv').properties.code, size: 50, "value": record.get('uv').properties.degree.low , "group": record.get('uv').properties.branche} )
+          edges.push( {"from": length, "to": genie[gx],"color": {"color": "#dddddd", "highlight": config.branches_color[gx.substring(0,2)]} , value: record.get("count(r)").low} )
           uv[record.get('uv').properties.code] = length;
         } else {
-          edges.push( {"from": uv[record.get('uv').properties.code], "to": genie[gx], value: record.get("count(r)").low} )
+          edges.push( {"from": uv[record.get('uv').properties.code],"color": {"color": "#dddddd", "highlight": config.branches_color[gx.substring(0,2)]} , "to": genie[gx], value: record.get("count(r)").low} )
         }
         length = nodes.length;
       })
-      return {nodes: nodes, edges: edges, genie: genie}
+      return {nodes: nodes, edges: edges, genie: genie, groupes: groupe}
     })
     .catch(error => {
       session.close();
