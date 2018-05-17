@@ -18,6 +18,23 @@ app.use('/static/', [
 
 app.use('/api/v1', api)
 
+function setupDB(req, res){
+  var sqlreader = require('./parser/sqlreader');
+
+  sqlreader.setupDB();
+
+  res.status(200).send("setup")
+}
+function calcGX(req, res){
+  var sqlreader = require('./parser/sqlreader');
+
+  sqlreader.calcGX();
+
+  res.status(200).send("calc")
+}
+
+app.use('/setup/db', setupDB)
+app.use('/setup/calc', calcGX)
 
 app.get('/', (req, res) => {
     res.render('index', {test: req.protocol + '://' + req.get('host') +req.originalUrl})

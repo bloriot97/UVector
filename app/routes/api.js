@@ -8,6 +8,7 @@ var Uv = require('../models/uv');
 var config = require("../config/config");
 
 var neo4japi = require("../api/neo4japi");
+var utcapi = require("../api/utcapi")
 
 router.get("/", function(req, res) {
   res.status(200).send("API");
@@ -45,6 +46,14 @@ router.get("/uvs", getOffsetLimit, function(req, res) {
   )
 
 });
+
+router.get("/uvs/:userid/current", function(req, res) {
+  neo4japi.getUserUvs(req.params.userid);
+  utcapi.getUserUvs(req.params.userid, (uvs, err) => {
+    return res.json( uvs );
+  });
+  //res.status(200).send("user : " + req.params.userid);
+})
 
 router.get("/graphs/branches", function(req, res) {
 
