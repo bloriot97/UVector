@@ -18,7 +18,7 @@
     <script type="text/javascript" src="/static/js/materialize.min.js"></script>
 </head>
 
-<body class="grey lighten-5">
+<body class="grey lighten-5" onload="updateGraph()">
     <!-- ================================================================== -->
     <!-- ============================= Header ============================ -->
     <!-- ================================================================== -->
@@ -26,13 +26,13 @@
         <nav>
             <div class="nav-wrapper blue-grey darken-3">
                 <ul class="brand-logo left">
-                    <li>UVector – {{test}}</li>
+                    <li>UVector</li>
                 </ul>
-                <div class="brand-logo center input-field" id="searchbar">
+                <!-- <div class="brand-logo center input-field" id="searchbar">
                     <a class="dropdown-button" data-activates="dropdown "><i class="material-icons prefix white-text">search</i><input placeholder="Rechercher un noeud, une branche..." id="node-to-search" type="text" class="validate white-text"></a>
 
                     <ul id="dropdown" class="dropdown-content"></ul>
-                </div>
+                </div> -->
 
                 <!-- <ul class="right">
                     <li><a href="#options-modal" class="modal-trigger"><i class="material-icons">settings</i></a></li>
@@ -73,7 +73,7 @@
               <div class="card" id="left-menu">
                   <ul class="collapsible" data-collapsible="expandable">
                       <li>
-                          <div class="collapsible-header active" id="menu_visualisation_header"><i class="material-icons">visibility</i><b class="truncate">Visualisation</b></div>
+                          <!-- <div class="collapsible-header active" id="menu_visualisation_header"><i class="material-icons">visibility</i><b class="truncate">Visualisation</b></div>
                           <div class="collapsible-body">
                               <p>
                                   <input name="visibility-group" type="radio" id="visibility-all" class="with-gap" checked="checked" />
@@ -88,7 +88,7 @@
                                   <input name="visibility-group" type="radio" id="visibility-same" class="with-gap"/>
                                   <label for="visibility-same">Parcours similaires</label>
                               </p>
-                          </div>
+                          </div> -->
                       </li>
                       <li>
                           <div class="collapsible-header" id="menu_filtres_header"><i class="material-icons">sort</i><b class="truncate">Filtres</b></div>
@@ -130,6 +130,7 @@
                                       <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GM" id="node_branch_IM_disabled" onclick="reverse(false, false, false, false, true, false, false, false, false, false)">IM</a></span>
                                       <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI" onclick="reverse(true, false, false, false, false, false, false, false, false, false)">GI</a></span>
                                       <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI_disabled" onclick="reverse(true, false, false, false, false, false, false, false, false, false)">GI</a></span>
+                                      <br> <br> <span><a class="btn center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Appliquer les changements" id="confirmBtn" onclick="updateGraph()">Confirm</a></span>
                                   </div>
                               </div>
                           </div>
@@ -268,7 +269,6 @@
     <script type="text/javascript">
     // Init the select in cards
     $(document).ready(function(){
-        updateGraph();
         $('#node_branch_GI_disabled').hide();
         $('#node_branch_GU_disabled').hide();
         $('#node_branch_GB_disabled').hide();

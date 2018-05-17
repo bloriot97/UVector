@@ -74,7 +74,6 @@ function reverse(GI, GU, GB, GP, IM, TC, TM, CS, NB, NT) {
   else {
     NoTypes = false;
   }
-  updateGraph();
   //console.log("GI=", GIBtn, "GU=", GUBtn, "GB=", GBBtn, "GP=", GPBtn, "IM=", IMBtn, "TC=", TCBtn, "TM=", TMBtn, "CS=", CSBtn, "NB=", NoBranches, "NT=", NoTypes);
 };
 
