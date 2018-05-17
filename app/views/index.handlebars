@@ -18,7 +18,7 @@
     <script type="text/javascript" src="/static/js/materialize.min.js"></script>
 </head>
 
-<body class="grey lighten-5">
+<body class="grey lighten-5" onload="updateGraph()">
     <!-- ================================================================== -->
     <!-- ============================= Header ============================ -->
     <!-- ================================================================== -->
@@ -130,6 +130,7 @@
                                       <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GM" id="node_branch_IM_disabled" onclick="reverse(false, false, false, false, true, false, false, false, false, false)">IM</a></span>
                                       <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI" onclick="reverse(true, false, false, false, false, false, false, false, false, false)">GI</a></span>
                                       <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI_disabled" onclick="reverse(true, false, false, false, false, false, false, false, false, false)">GI</a></span>
+                                      <br> <br> <span><a class="btn center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Appliquer les changements" id="confirmBtn" onclick="updateGraph()">Confirm</a></span>
                                   </div>
                               </div>
                           </div>
@@ -268,7 +269,6 @@
     <script type="text/javascript">
     // Init the select in cards
     $(document).ready(function(){
-        updateGraph();
         $('#node_branch_GI_disabled').hide();
         $('#node_branch_GU_disabled').hide();
         $('#node_branch_GB_disabled').hide();
