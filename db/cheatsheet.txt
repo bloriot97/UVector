@@ -38,3 +38,17 @@ WITH toFloat(count(branche))/toFloat(uv.degree) as prop, branche as branche, uv 
 WITH stDev(prop) as dev,collect([prop, branche]) as prop, count(prop) as cnt, uv as uv
 WHERE cnt > 2 and dev < 0.2
 SET uv.branche = 'GX'
+
+MATCH (p:Person)-[r:SUIT]->(uv:UV) 
+WITH count(r) as cnt, uv.code as code
+MATCH (uv:UV {code: code}) 
+SET uv.degree = cnt
+return uv
+
+MATCH ()-[r]->(uv) 
+WHERE uv.type <> "TSH" AND left(r.GX, 2) IN ["TC","GI","IM","GU","GB","GP"]
+WITH LEFT(r.GX, 2) as branche, uv as uv
+WITH [count(branche), branche] as branche, uv as uv
+ORDER BY branche[0] DESC
+WITH collect(branche) as branches, uv as uv
+SET uv.branche = branches[0][1]
