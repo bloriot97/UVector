@@ -10,3 +10,45 @@ CREATE (RO03:UV {code:"RO03", fullname:"Recherche opérationnelle, optimisation c
 
 
 MATCH ()-[r]->(uv) RETURN count(r), r.GX,uv 
+
+MATCH (p:Person {id: 'narichar'})-[r:SUIT]->(uv:UV) WHERE r.GX IN ['TC01','TC02','TC03'] return collect(uv.code)
+
+MATCH (p:Person {id: 'narichar'})-[r:SUIT]->(uv:UV) WHERE NOT r.GX=~ 'TC.*' return count(LEFT(r.GX, 2)),LEFT(r.GX, 2) 
+
+MATCH (p:Person)-[r:SUIT]->(uv:UV) 
+WHERE r.GX IN ['TC01','TC02','TC03'] 
+WITH collect(uv.code) as uvs_tc, p.id as id_etu, count(r) as cnt, ID(p) as node_ID
+MATCH (p2:Person {id: id_etu})-[r:SUIT]->(uv:UV) WHERE NOT r.GX=~ 'TC.*' AND cnt > 15
+WITH count(LEFT(r.GX,3)) as cnt, LEFT(r.GX,3) as branche, uvs_tc, id_etu, node_ID
+return uvs_tc, node_ID, branche 
+
+MATCH ()-[r:SUIT]->() WHERE r.GX =~ 'GSM.*' SET r.GX = replace(r.GX, 'GSM', 'GM') return null
+
+MATCH ()-[r]->(uv) 
+WHERE uv.type <> "TSH" AND left(r.GX, 2) IN ["TC","GI","IM","GU","GB","GP"]
+WITH LEFT(r.GX, 2) as branche, uv as uv
+WITH [count(branche), branche] as branche, uv as uv
+WITH collect(branche) as branches, uv as uv
+return branches,uv
+
+MATCH ()-[r]->(uv) 
+WHERE uv.type <> "TSH" AND left(r.GX, 2) IN ["TC","GI","IM","GU","GB","GP"] AND uv.degree > 100
+WITH LEFT(r.GX, 2) as branche, uv as uv
+WITH toFloat(count(branche))/toFloat(uv.degree) as prop, branche as branche, uv as uv
+WITH stDev(prop) as dev,collect([prop, branche]) as prop, count(prop) as cnt, uv as uv
+WHERE cnt > 2 and dev < 0.2
+SET uv.branche = 'GX'
+
+MATCH (p:Person)-[r:SUIT]->(uv:UV) 
+WITH count(r) as cnt, uv.code as code
+MATCH (uv:UV {code: code}) 
+SET uv.degree = cnt
+return uv
+
+MATCH ()-[r]->(uv) 
+WHERE uv.type <> "TSH" AND left(r.GX, 2) IN ["TC","GI","IM","GU","GB","GP"]
+WITH LEFT(r.GX, 2) as branche, uv as uv
+WITH [count(branche), branche] as branche, uv as uv
+ORDER BY branche[0] DESC
+WITH collect(branche) as branches, uv as uv
+SET uv.branche = branches[0][1]

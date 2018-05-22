@@ -1,5 +1,7 @@
 // Button variables
 
+var network;
+
 var TCBtn = true;
 var CSBtn = true;
 var TMBtn = true;
@@ -72,7 +74,6 @@ function reverse(GI, GU, GB, GP, IM, TC, TM, CS, NB, NT) {
   else {
     NoTypes = false;
   }
-  updateGraph();
   //console.log("GI=", GIBtn, "GU=", GUBtn, "GB=", GBBtn, "GP=", GPBtn, "IM=", IMBtn, "TC=", TCBtn, "TM=", TMBtn, "CS=", CSBtn, "NB=", NoBranches, "NT=", NoTypes);
 };
 
@@ -122,27 +123,46 @@ function updateGraph() {
   else {
     JSONadress = "/api/v1/graphs/branches";
   }
+  //JSONadress = "/api/v1/graphs/branches/?types=TSH"
   $.getJSON( JSONadress, function( data ) {
     var container = document.getElementById('vis-network');
+    console.log(data.groupes)
     var options = {
         nodes: {
             shape: 'dot',
-            size: 16
+            size: 25
         },
+        edges: {
+          smooth: {type: 'continuous'},
+          selectionWidth: function (width) {return width*2;}
+        },
+        groups: data.groupes,
         physics: {
             forceAtlas2Based: {
-                gravitationalConstant: -26,
+                gravitationalConstant: -100,
                 centralGravity: 0.005,
                 springLength: 230,
                 springConstant: 0.18
             },
-            maxVelocity: 146,
+            maxVelocity: 150,
             solver: 'forceAtlas2Based',
             timestep: 0.35,
-            stabilization: {iterations: 150}
-        }
+            stabilization: {iterations: 5}
+        },
+        interaction: {
+        hideEdgesOnDrag: true,
+        // tooltipDelay: 200,
+        // dragNodes: false,// do not allow dragging nodes
+        // zoomView: true, // do not allow zooming
+        // dragView: true  // do not allow dragging
+      }
     };
-    var network = new vis.Network(container, data, options);
+    var dataNodes = {
+      "nodes": data['nodes'], "edges": data['edges']
+    };
+    network = new vis.Network(container, dataNodes, options);
+    var dataBranches = data['genie'];
+    network.moveNode(dataBranches['GI01'],200,200);
   });
   console.log("Types=",filterType,"Branches=",filterBranch);
 };
