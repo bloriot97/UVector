@@ -43,6 +43,25 @@ function getUserUvs(userid) {
     });
 }
 
+function getUv(code) {
+  var session = driver.session();
+  return session
+    .run(
+      "MATCH (uv: UV {code:\"" + code + "\" }) RETURN uv")
+    .then(result => {
+      session.close();
+      return res = result.records.map(record => {
+        return new Uv(record.get('uv').properties);
+      })
+
+
+    })
+    .catch(error => {
+      session.close();
+      throw error;
+    });
+}
+
 function getGraphBranches(filter) {
   var session = driver.session();
   return session
@@ -84,7 +103,6 @@ function getGraphBranches(filter) {
             size = k * 300 + 300
             x_coord = -Math.cos((n-1)/(4) * 3.14) * size
             y_coord = -Math.sin((n-1)/(4) * 3.14) * size
-
           }
           nodes.push( {id: length, "label": gx, "group": gx.substring(0,2), x:x_coord, y:y_coord, fixed: true, size: 50, "shape": "box", "font": {"size":50} } )
 
@@ -121,6 +139,7 @@ function getGraphBranches(filter) {
     });
 }
 
+exports.getUv = getUv;
 
 exports.getUvs = getUvs;
 exports.getGraphBranches = getGraphBranches;

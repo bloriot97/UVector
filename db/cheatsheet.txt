@@ -52,3 +52,15 @@ WITH [count(branche), branche] as branche, uv as uv
 ORDER BY branche[0] DESC
 WITH collect(branche) as branches, uv as uv
 SET uv.branche = branches[0][1]
+
+
+
+MATCH ()-[r]->(uv) 
+WHERE left(r.GX, 2) IN ["TC","GI","IM","GU","GB","GP"]
+WITH r.GX as GX, [uv, count(uv)] as uv_cnt
+WITH GX as GX, collect(uv_cnt) as uvs
+CREATE (semestre:GX {id:GX})
+WITH semestre as semestre, uvs as uvs
+UNWIND uvs as uv
+WITH semestre as semestre, uv[0] as uv, uv[1] as cnt
+CREATE (semestre)-[r:Test {count: cnt}]->( uv )

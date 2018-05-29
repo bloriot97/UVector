@@ -2,81 +2,6 @@
 
 var network;
 
-var TCBtn = true;
-var CSBtn = true;
-var TMBtn = true;
-var GIBtn = true;
-var GUBtn = true;
-var IMBtn = true;
-var GPBtn = true;
-var GBBtn = true;
-var NoBranches = false;
-var NoTypes = false;
-
-function reverse(GI, GU, GB, GP, IM, TC, TM, CS, NB, NT) {
-  if (NB && !NoBranches) {
-    GIBtn = false;
-    GUBtn = false;
-    GBBtn = false;
-    GPBtn = false;
-    IMBtn = false;
-    TCBtn = false;
-  }
-  else if (NB && NoBranches) {
-    GIBtn = true;
-    GUBtn = true;
-    GBBtn = true;
-    GPBtn = true;
-    IMBtn = true;
-    TCBtn = true;
-  }
-  else if (NT && !NoTypes) {
-    TMBtn = false;
-    CSBtn = false;
-  }
-  else if (NT && NoTypes) {
-    TMBtn = true;
-    CSBtn = true;
-  }
-  else if (GI) {
-    GIBtn = !GIBtn;
-  }
-  else if (GU) {
-    GUBtn = !GUBtn;
-  }
-  else if (GB) {
-    GBBtn = !GBBtn;
-  }
-  else if (GP) {
-    GPBtn = !GPBtn;
-  }
-  else if (IM) {
-    IMBtn = !IMBtn;
-  }
-  else if (TC) {
-    TCBtn = !TCBtn;
-  }
-  else if (TM) {
-    TMBtn = !TMBtn;
-  }
-  else if (CS) {
-    CSBtn = !CSBtn;
-  }
-  if (!GIBtn && !GUBtn && !GBBtn && !GPBtn && !IMBtn && !TCBtn) {
-    NoBranches = true;
-  }
-  else {
-    NoBranches = false;
-  }
-  if (!TMBtn && !CSBtn) {
-    NoTypes = true;
-  }
-  else {
-    NoTypes = false;
-  }
-  //console.log("GI=", GIBtn, "GU=", GUBtn, "GB=", GBBtn, "GP=", GPBtn, "IM=", IMBtn, "TC=", TCBtn, "TM=", TMBtn, "CS=", CSBtn, "NB=", NoBranches, "NT=", NoTypes);
-};
-
 var nodes = []
 
 var edges = []
@@ -86,28 +11,28 @@ var edges = []
 function updateGraph() {
   var filterBranch = [];
   var filterType = [];
-  if (TCBtn) {
+  if (!$("#node_branch_TC").hasClass("btn-flat")) {
     filterBranch.push("TC");
   }
-  if (CSBtn) {
+  if (!$("#node_category_CS").hasClass("btn-flat")) {
     filterType.push("CS");
   }
-  if (TMBtn) {
+  if (!$("#node_category_TM").hasClass("btn-flat")) {
     filterType.push("TM");
   }
-  if (GIBtn) {
+  if (!$("#node_branch_GI").hasClass("btn-flat")) {
     filterBranch.push("GI");
   }
-  if (GUBtn) {
+  if (!$("#node_branch_GU").hasClass("btn-flat")) {
     filterBranch.push("GU");
   }
-  if (IMBtn) {
+  if (!$("#node_branch_IM").hasClass("btn-flat")) {
     filterBranch.push("IM");
   }
-  if (GPBtn) {
+  if (!$("#node_branch_GP").hasClass("btn-flat")) {
     filterBranch.push("GP");
   }
-  if (GBBtn) {
+  if (!$("#node_branch_GB").hasClass("btn-flat")) {
     filterBranch.push("GB");
   }
   var JSONadress;
@@ -149,6 +74,9 @@ function updateGraph() {
             timestep: 0.35,
             stabilization: {iterations: 5}
         },
+        layout:{
+          improvedLayout: false
+        },
         interaction: {
         hideEdgesOnDrag: true,
         // tooltipDelay: 200,
@@ -162,7 +90,6 @@ function updateGraph() {
     };
     network = new vis.Network(container, dataNodes, options);
     var dataBranches = data['genie'];
-    network.moveNode(dataBranches['GI01'],200,200);
   });
   console.log("Types=",filterType,"Branches=",filterBranch);
 };
