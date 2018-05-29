@@ -67,21 +67,12 @@ function getGraphBranches(filter) {
       var length = 0;
       result.records.map(record => {
         var gx = record.get('r.GX');
-        if ( gx.substring(0,3) == 'GSU' ){
-          gx = "GU" + gx.substring(3,5)
-        }
-        if ( gx.substring(0,3) == 'GSM' ){
-          gx = "IM" + gx.substring(3,5)
-        }
-        if ( gx.substring(0,2) == 'GM' ){
-          gx = "IM" + gx.substring(2,4)
-        }
 
         if ( genie[gx] === undefined ){
           genie[gx] = length;
 
           var n = _.indexOf(config.branches, gx.substring(0,2) )
-          var k = parseInt(gx.substring(gx.length-1,gx.length))
+          var k = parseInt(gx.substring(gx.length-2,gx.length))
 
           var x_coord = 0
           var y_coord = 0

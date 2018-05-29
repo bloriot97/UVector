@@ -123,22 +123,23 @@ function updateGraph() {
   else {
     JSONadress = "/api/v1/graphs/branches";
   }
-  //JSONadress = "/static/js/branches.json"
+  //JSONadress = "/api/v1/graphs/branches/?types=TSH"
   $.getJSON( JSONadress, function( data ) {
     var container = document.getElementById('mynetwork');
     console.log(data.groupes)
     var options = {
         nodes: {
             shape: 'dot',
-            size: 16
+            size: 25
         },
         edges: {
-          smooth: {type: 'continuous'}
+          smooth: {type: 'continuous'},
+          selectionWidth: function (width) {return width*2;}
         },
         groups: data.groupes,
         physics: {
             forceAtlas2Based: {
-                gravitationalConstant: -26,
+                gravitationalConstant: -100,
                 centralGravity: 0.005,
                 springLength: 230,
                 springConstant: 0.18
@@ -146,7 +147,7 @@ function updateGraph() {
             maxVelocity: 150,
             solver: 'forceAtlas2Based',
             timestep: 0.35,
-            stabilization: {iterations: 0}
+            stabilization: {iterations: 5}
         },
         interaction: {
         hideEdgesOnDrag: true,
