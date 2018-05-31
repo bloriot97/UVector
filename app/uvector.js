@@ -11,6 +11,8 @@ app.set('view engine', 'handlebars');
 app.use('/static/', [
     express.static(__dirname + '/node_modules/materialize-css/dist/'),
     express.static(__dirname + '/node_modules/jquery/dist/'),
+    express.static(__dirname + '/node_modules/chart.js/dist/'),
+    express.static(__dirname + '/node_modules/readmore-js/'),
     express.static(__dirname + '/static/'),
     express.static(__dirname + '/node_modules/vis/dist/'),
 

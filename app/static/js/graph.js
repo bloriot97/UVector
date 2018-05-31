@@ -51,7 +51,7 @@ function updateGraph() {
   //JSONadress = "/api/v1/graphs/branches/?types=TSH"
   $.getJSON( JSONadress, function( data ) {
     var container = document.getElementById('mynetwork');
-    console.log(data.groupes)
+    //console.log(data.groupes)
     var options = {
         nodes: {
             shape: 'dot',
@@ -89,7 +89,10 @@ function updateGraph() {
       "nodes": data['nodes'], "edges": data['edges']
     };
     network = new vis.Network(container, dataNodes, options);
+    network.on("selectNode", function (params) {
+      showUvCard(dataNodes.nodes[params.nodes[0]].label)
+    });
     var dataBranches = data['genie'];
   });
-  console.log("Types=",filterType,"Branches=",filterBranch);
+  //console.log("Types=",filterType,"Branches=",filterBranch);
 };

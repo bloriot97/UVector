@@ -103,7 +103,7 @@ function calcDeg(){
   var session = driver.session();
   return session
     .run(
-      "MATCH (p:Person)-[r:SUIT]->(uv:UV) WITH count(r) as cnt, uv.code as code MATCH (uv:UV {code: code}) SET uv.degree = cnt ")
+      "MATCH (p:Person)-[r:SUIT]->(uv:UV) WHERE left(r.GX, 2) IN ['TC','GI','IM','GU','GB','GP']  WITH count(r) as cnt, uv.code as code MATCH (uv:UV {code: code}) SET uv.degree = cnt ")
     .then(result => {
       session.close();
       return result;

@@ -15,7 +15,7 @@ function getUvs() {
       session.close();
 
       return res = result.records.map(record => {
-        return new Uv(record.get('uv').properties);
+        return new Uv(record.get('uv').properties).data;
       })
 
     })
@@ -50,11 +50,30 @@ function getUv(code) {
       "MATCH (uv: UV {code:\"" + code + "\" }) RETURN uv")
     .then(result => {
       session.close();
-      return res = result.records.map(record => {
-        return new Uv(record.get('uv').properties);
-      })
+      return res = new Uv(result.records[0].get('uv').properties).data;
 
 
+    })
+    .catch(error => {
+      session.close();
+      throw error;
+    });
+}
+
+function getUvAttendance(code) {
+  var session = driver.session();
+  return session
+    .run(
+      "MATCH ()-[r:SUIT]->(uv:UV {code : {code}}) WHERE left(r.GX,2) in ['TC','GI','IM','GU','GB','GP'] WITH r as r, LEFT(r.GX, 2) as GX, uv AS uv WITH [GX,toFloat(count(GX)) / uv.degree] as cnt return collect(cnt) as attendance",
+    {code: code})
+    .then(result => {
+      session.close();
+      res = {}
+      result.records[0].get("attendance").map( attendance => {
+        res[attendance[0]] = attendance[1];
+      });
+
+      return res;
     })
     .catch(error => {
       session.close();
@@ -140,6 +159,7 @@ function getGraphBranches(filter) {
 }
 
 exports.getUv = getUv;
+exports.getUvAttendance = getUvAttendance;
 
 exports.getUvs = getUvs;
 exports.getGraphBranches = getGraphBranches;

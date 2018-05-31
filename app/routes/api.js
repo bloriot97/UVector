@@ -56,6 +56,15 @@ router.get("/uvs/:code", getOffsetLimit, function(req, res) {
 
 });
 
+router.get("/uvs/:code/attendance", getOffsetLimit, function(req, res) {
+  neo4japi.getUvAttendance( req.params.code ).then( attendance => {
+      if (!attendance) return;
+      return res.json( attendance );
+    }
+  )
+
+});
+
 router.get("/uvs/:userid/current", function(req, res) {
   neo4japi.getUserUvs(req.params.userid);
   utcapi.getUserUvs(req.params.userid, (uvs, err) => {

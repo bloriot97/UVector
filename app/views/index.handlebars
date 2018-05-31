@@ -16,6 +16,8 @@
     <script type="text/javascript" src="/static/vis.js"></script>
     <script type="text/javascript" src="/static/js/graph.js"></script>
     <script type="text/javascript" src="/static/js/materialize.min.js"></script>
+    <script type="text/javascript" src="/static/Chart.bundle.js"></script>
+
 </head>
 
 <body class="grey lighten-5" onload="updateGraph()">
@@ -143,13 +145,35 @@
 
 
           <!-- ===== Right Menu ===== -->
-          <!-- <div class="col s3 m3 l3 push-s6 push-m6 push-l7">
+          <div class="col s3 m3 l3 push-s6 push-m6 push-l7">
               <div class="card" id="right-menu">
-                  <div class="card" id="right-menu-infoUV">
-                      <ul class="collection"></ul>
+                <div class="card">
+                  <div class="card-content ">
+                    <span class="card-title" id="uvCard-title">MT90</span>
                   </div>
-              </div> -->
-
+                  <div class="card-tabs">
+                    <ul class="tabs tabs-fixed-width">
+                      <li class="tab"><a class="active" href="#uvCard-info">Info</a></li>
+                      <li class="tab"><a href="#uvCard-stats">Stats</a></li>
+                    </ul>
+                  </div>
+                  <div class="card-content">
+                    <div id="uvCard-info">
+                      <p id="uvCard-description"> Premier volet du module initial de mathématiques de Tronc Commun. Il permet d'acquérir les bases indispensables à l'étude des fonctions d'une variable.</p>
+                      <p> Nombre de crédits : <span id="uvCard-credits">6</span> </p>
+                      <p> Type : <span id="uvCard-type">CS</span> </p>
+                      <p> Branche : <span id="uvCard-branche">GX</span> </p>
+                    </div>
+                    <div id="uvCard-stats">
+                      <canvas id="attendanceChart" width="100" height="100"></canvas>
+                    </div>
+                  </div>
+                  <!--<div class="card-action">
+                    <a href="#">This is a link</a>
+                  </div>-->
+                </div>
+              </div>
+          </div>
         </div>
 
 
@@ -259,8 +283,60 @@
     <!-- ================================================================== -->
 
     <script type="text/javascript">
+    function showUvCard(uv){
+      $.getJSON( "/api/v1/uvs/" + uv, data => {
+        $("#uvCard-title").text(data.code)
+        $("#uvCard-description").text(data.description)
+        $("#uvCard-branche").text(data.branche)
+
+      });
+      updateGraphAttendance(uv);
+    }
+    var attendanceChart;
+    function updateGraphAttendance(uv){
+      $.getJSON( "/api/v1/uvs/" + uv + "/attendance", data => {
+        attendance = data;
+        colors_GX = {
+          TC: "#3498db",
+          GU: "#e67e22",
+          GI: "#1abc9c",
+          IM: "#f1c40f",
+          GB: "#9b59b6",
+          GP: "#e74c3c",
+          GX: "#888888"
+        }
+        color = Object.keys(attendance).map( GX => {
+          return colors_GX[GX]
+        })
+        data = {
+            datasets: [{
+                data: Object.values(attendance),
+                backgroundColor: color
+            }],
+
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: Object.keys(attendance)
+        };
+        var ctx = $("#attendanceChart");
+        if ( attendanceChart ){
+          attendanceChart.destroy()
+        }
+        attendanceChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: data,
+            options: {}
+        });
+      });
+      //attendance = {"GU":0.02857142857142857,"GI":0.39365079365079364,"TC":0.0746031746031746,"GB":0.03968253968253968,"GP":0.08888888888888889,"IM":0.3746031746031746}
+
+    }
     // Init the select in cards
     $(document).ready(function(){
+
+
+      showUvCard("NF16")
+      // Chart
+
 
         $(".UV_selection, .GX_selection").click( (element)=>{
           $(element.currentTarget).toggleClass("btn-flat")
@@ -300,7 +376,7 @@
         })
 
         // Hidding right panel
-        $('#right-menu').hide();
+        //$('#right-menu').hide();
 
         $('select').material_select();
         $('.modal-trigger').leanModal({
