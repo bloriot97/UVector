@@ -146,7 +146,7 @@
 
           <!-- ===== Right Menu ===== -->
           <div class="col s3 m3 l3 push-s6 push-m6 push-l7">
-              <div class="card" id="right-menu">
+              <div class="card" id="right-menu-uv">
                 <div class="card">
                   <div class="card-content ">
                     <span class="card-title" id="uvCard-title">MT90</span>
@@ -165,6 +165,30 @@
                       <p> Branche : <span id="uvCard-branche">GX</span> </p>
                     </div>
                     <div id="uvCard-stats">
+                      <canvas id="attendanceChart" width="100" height="100"></canvas>
+                    </div>
+                  </div>
+                  <!--<div class="card-action">
+                    <a href="#">This is a link</a>
+                  </div>-->
+                </div>
+              </div>
+              <div class="card" id="right-menu-gx">
+                <div class="card">
+                  <div class="card-content ">
+                    <span class="card-title" id="gxCard-title">GI01</span>
+                  </div>
+                  <div class="card-tabs">
+                    <ul class="tabs tabs-fixed-width">
+                      <li class="tab"><a class="active" href="#gxCard-cs">CS</a></li>
+                      <li class="tab"><a href="#gxCard-tm">TM</a></li>
+                    </ul>
+                  </div>
+                  <div class="card-content">
+                    <div id="gxCard-cs">
+                      <canvas id="attendanceChart" width="100" height="100"></canvas>
+                    </div>
+                    <div id="gxCard-tm">
                       <canvas id="attendanceChart" width="100" height="100"></canvas>
                     </div>
                   </div>
@@ -284,6 +308,8 @@
 
     <script type="text/javascript">
     function showUvCard(uv){
+      $('#right-menu-gx').hide();
+      $('#right-menu-uv').show();
       $.getJSON( "/api/v1/uvs/" + uv, data => {
         $("#uvCard-title").text(data.code)
         $("#uvCard-description").text(data.description)
@@ -292,7 +318,79 @@
       });
       updateGraphAttendance(uv);
     }
+    function showGxCard(gx){
+      $('#right-menu-gx').show();
+      $('#right-menu-uv').hide();
+      $("#gxCard-title").text(gx)
+      updateGxGraphAttendance(gx);
+    }
     var attendanceChart;
+    var csAttendanceChart;
+    var tmAttendanceChart;
+
+    function updateGxGraphAttendance(gx){
+      options = {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            gridLines: {
+              display: false,
+            },
+          }],
+          yAxes: [{
+            ticks: {
+                beginAtZero: true
+            },
+            display: false
+          }],
+        },
+      }
+      $.getJSON( "/api/v1/semestres/" + gx + "/attendance/CS", data => {
+        attendance = data;
+        data = {
+            datasets: [{
+                data: Object.values(attendance),
+                backgroundColor: "#1abc9c"
+            }],
+
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: Object.keys(attendance)
+        };
+        var ctx = $("#gxCard-cs>#attendanceChart");
+        if ( csAttendanceChart ){
+          csAttendanceChart.destroy()
+        }
+        csAttendanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+      });
+      $.getJSON( "/api/v1/semestres/" + gx + "/attendance/TM", data => {
+        attendance = data;
+        data = {
+            datasets: [{
+                data: Object.values(attendance),
+                backgroundColor: "#1abc9c"
+            }],
+
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: Object.keys(attendance)
+        };
+        var ctx = $("#gxCard-tm>#attendanceChart");
+        if ( tmAttendanceChart ){
+          tmAttendanceChart.destroy()
+        }
+        tmAttendanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+      });
+    }
+
     function updateGraphAttendance(uv){
       $.getJSON( "/api/v1/uvs/" + uv + "/attendance", data => {
         attendance = data;
@@ -317,7 +415,7 @@
             // These labels appear in the legend and in the tooltips when hovering different arcs
             labels: Object.keys(attendance)
         };
-        var ctx = $("#attendanceChart");
+        var ctx = $("#uvCard-stats>#attendanceChart");
         if ( attendanceChart ){
           attendanceChart.destroy()
         }
@@ -333,8 +431,8 @@
     // Init the select in cards
     $(document).ready(function(){
 
-
-      showUvCard("NF16")
+      $('#right-menu-gx').hide();
+      $('#right-menu-uv').hide();
       // Chart
 
 
@@ -376,7 +474,7 @@
         })
 
         // Hidding right panel
-        //$('#right-menu').hide();
+
 
         $('select').material_select();
         $('.modal-trigger').leanModal({

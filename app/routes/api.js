@@ -73,6 +73,29 @@ router.get("/uvs/:userid/current", function(req, res) {
   //res.status(200).send("user : " + req.params.userid);
 })
 
+router.get("/semestres/:semestre/attendance", function(req, res) {
+  neo4japi.getSemestresAttendance( req.params.semestre, ["CS", "TM"], 5 ).then( attendance => {
+      if (!attendance) return;
+      return res.json( attendance );
+    }
+  )
+})
+
+router.get("/semestres/:semestre/attendance/CS", function(req, res) {
+  neo4japi.getSemestresAttendance( req.params.semestre, ["CS"], 5).then( attendance => {
+      if (!attendance) return;
+      return res.json( attendance );
+    }
+  )
+})
+router.get("/semestres/:semestre/attendance/TM", function(req, res) {
+  neo4japi.getSemestresAttendance( req.params.semestre, ["TM"], 5 ).then( attendance => {
+      if (!attendance) return;
+      return res.json( attendance );
+    }
+  )
+})
+
 router.get("/graphs/branches", function(req, res) {
 
   if (req.filter === undefined) {

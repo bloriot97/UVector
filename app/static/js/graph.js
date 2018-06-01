@@ -90,7 +90,12 @@ function updateGraph() {
     };
     network = new vis.Network(container, dataNodes, options);
     network.on("selectNode", function (params) {
-      showUvCard(dataNodes.nodes[params.nodes[0]].label)
+      if (dataNodes.nodes[params.nodes[0]].shape == "box"){ // GX
+        showGxCard(dataNodes.nodes[params.nodes[0]].label)
+      } else { // UV
+        showUvCard(dataNodes.nodes[params.nodes[0]].label)
+      }
+
     });
     var dataBranches = data['genie'];
   });
