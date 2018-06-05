@@ -81,15 +81,16 @@ function getUvAttendance(code) {
     });
 }
 
-function getSemestresAttendance(semestre, uv_type, limit) {
+function getSemestresAttendance(semestre, uv_type, limit, saison) {
   var session = driver.session();
   return session
     .run(
-      "MATCH ()-[r:SUIT {GX: {semestre} }]->(uv:UV) WHERE uv.type in {uv_type} WITH uv.code as code, count(r) as cnt ORDER BY cnt DESC LIMIT {limit} WITH collect([code, toFloat(cnt)]) as collection RETURN collection as attendance",
+      "MATCH ()-[r:SUIT {GX: {semestre} }]->(uv:UV) WHERE uv.type in {uv_type} AND LEFT(r.codeSemestre,1) in {saison} WITH uv.code as code, count(r) as cnt ORDER BY cnt DESC LIMIT {limit} WITH collect([code, toFloat(cnt)]) as collection RETURN collection as attendance",
     {
       semestre: semestre,
       uv_type: uv_type,
-      limit: limit
+      limit: limit,
+      saison: saison
     })
     .then(result => {
       session.close();
@@ -188,7 +189,7 @@ function getGraphBranches2(filter) {
   var session = driver.session();
   return session
     .run(
-      "MATCH ()-[r]->(uv) WHERE uv.degree > 5 AND uv.type IN {types} AND left(r.GX,2) IN {branches} WITH count(r) as cnt, r.GX as GX, uv as uv RETURN collect([cnt, uv]) as attendances, GX as gx",
+      "MATCH ()-[r]->(uv) WHERE uv.degree > 5 AND uv.type IN {types} AND left(r.GX,2) IN {branches} AND LEFT(r.codeSemestre,1) in {saison} WITH count(r) as cnt, r.GX as GX, uv as uv RETURN collect([cnt, uv]) as attendances, GX as gx",
       filter)
     .then(result => {
       session.close();

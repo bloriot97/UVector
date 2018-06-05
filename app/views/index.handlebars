@@ -68,10 +68,10 @@
     <!-- ================================================================== -->
 
 
-    <div class="row" id="menus">
+    <div id="menus">
 
         <!-- ===== Left Menu ===== -->
-          <div class="col s3 m3 l2">
+          <div class="left-menu">
               <div class="card" id="left-menu">
                   <ul class="collapsible" data-collapsible="expandable">
                       <li>
@@ -123,13 +123,27 @@
                                       <span><a class="btn-floating GX_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GM" id="node_branch_IM">IM</a></span>
                                       <span><a class="btn-floating GX_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI">GI</a></span>
                                   </div>
-                                  <div class="center-align container">
-                                      <span><button class="btn center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Appliquer les changements" id="confirmBtn" onclick="updateGraph()">Confirmer</button></span>
+
+                              </div>
+
+                              <div class="row">
+                                  <div class="container section">  <!--class section is for top and bottom padding-->
+                                      <label class="truncate"><b> Saison </b></label>
                                   </div>
+                                  <div class="container center-align">
+                                    <!--<span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les semestres" id="saison_All_hide"><i class="material-icons center-align">visibility_off</i></a></span>-->
+
+                                      <span><a class="btn-floating Saison_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les CS" id="saison_A" >A</a></span>
+                                      <span><a class="btn-floating Saison_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les TM" id="saison_P">P</a></span>
+
+                                  </div>
+                              </div>
+                              <div class="center-align container">
+                                  <span><button class="btn center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Appliquer les changements" id="confirmBtn" onclick="updateGraph()">Confirmer</button></span>
                               </div>
                           </div>
                       </li>
-                      <li>
+                      <!--<li>
                           <div class="collapsible-header" id="menu_parcours_header"><i class="material-icons">timeline</i><b class="truncate">Mes parcours</b></div>
                           <div class="collapsible-body">
                               <ul class="collection">
@@ -138,14 +152,14 @@
                                   <li class="collection-item"><div class="truncate">Ajouter un nouveau parcours<a href="#!" class="secondary-content"><i class="material-icons">playlist_add</i></a></div></li>
                               </ul>
                           </div>
-                      </li>
+                      </li>-->
                   </ul>
               </div>
           </div>
 
 
           <!-- ===== Right Menu ===== -->
-          <div class="col s3 m3 l3 push-s6 push-m6 push-l7">
+          <div class="right-menu">
               <div class="card" id="right-menu-uv">
                 <div class="card">
                   <div class="card-content ">
@@ -176,7 +190,18 @@
               <div class="card" id="right-menu-gx">
                 <div class="card">
                   <div class="card-content ">
-                    <span class="card-title" id="gxCard-title">GI01</span>
+                    <span class="card-title">
+                      <span id="gxCard-title">GI01</span>
+                      <!-- Dropdown Structure
+                      <i class='dropdown-trigger material-icons right' href='#' data-target='dropdown1'>more_vert</a>
+
+
+                      <ul id='dropdown1' class='dropdown-content'>
+                        <li><a href="#!">one</a></li>
+                        <li><a href="#!">two</a></li>
+                      </ul>-->
+                    </span>
+
                   </div>
                   <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width">
@@ -212,19 +237,21 @@
     <!-- ====================  Loader for the graph ======================= -->
     <!-- ================================================================== -->
     <!-- Loader that appears while the graph is being processed -->
-    <!-- <div id="loader-wrapper">
-        <div class="preloader-wrapper big active" id="graph-loader">
-            <div class="spinner-layer spinner-blue-only">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div><div class="gap-patch">
-                    <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                    <div class="circle"></div>
-                </div>
-            </div>
+
+    <div class="center" id="graph-preloader">
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-red-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
         </div>
+      </div>
     </div>
+
 
     <div class="fixed-action-btn" id="#action-button">
         <a class="btn-floating btn-large blue-grey darken-1">
@@ -235,7 +262,8 @@
             <li><a class="btn-floating blue-grey lighten-2 tooltipped" data-position="left" data-delay="500" data-tooltip="Zoomer" onclick="zoomIn(activeGraph)"><i class="material-icons">add</i></a></li>
             <li><a class="btn-floating blue-grey lighten-2 tooltipped" data-position="left" data-delay="500" data-tooltip="Ajuster" onclick="fitSize(activeGraph)"><i class="material-icons">fullscreen</i></a></li>
         </ul>
-    </div> -->
+    </div>
+
 
 
 
@@ -347,7 +375,7 @@
           }],
         },
       }
-      $.getJSON( "/api/v1/semestres/" + gx + "/attendance/CS", data => {
+      $.getJSON( "/api/v1/semestres/" + gx + "/attendance/CS?saison=" + saison, data => {
         attendance = data;
         data = {
             datasets: [{
@@ -368,7 +396,7 @@
             options: options
         });
       });
-      $.getJSON( "/api/v1/semestres/" + gx + "/attendance/TM", data => {
+      $.getJSON( "/api/v1/semestres/" + gx + "/attendance/TM?saison=" + saison, data => {
         attendance = data;
         data = {
             datasets: [{
@@ -436,7 +464,7 @@
       // Chart
 
 
-        $(".UV_selection, .GX_selection").click( (element)=>{
+        $(".UV_selection, .GX_selection, .Saison_selection").click( (element)=>{
           $(element.currentTarget).toggleClass("btn-flat")
           if ( $(element.currentTarget).hasClass("GX_selection") ){
             if($(".GX_selection").hasClass("btn-flat")){
@@ -453,6 +481,18 @@
             }
           }
         })
+
+        $("#saison_All_hide").click( (element) =>{
+          if(!$(".Saison_selection").hasClass("btn-flat")){
+            $(".Saison_selection").addClass("btn-flat")
+            $("#saison_All_hide i").html("visibility")
+
+          } else {
+            $(".Saison_selection").removeClass("btn-flat")
+            $("#saison_All_hide i").html("visibility_off")
+          }
+        })
+
         $("#node_branch_All_hide").click( (element) =>{
           if(!$(".GX_selection").hasClass("btn-flat")){
             $(".GX_selection").addClass("btn-flat")

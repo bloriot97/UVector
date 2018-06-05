@@ -82,14 +82,22 @@ router.get("/semestres/:semestre/attendance", function(req, res) {
 })
 
 router.get("/semestres/:semestre/attendance/CS", function(req, res) {
-  neo4japi.getSemestresAttendance( req.params.semestre, ["CS"], 5).then( attendance => {
+  let saison = ["A", "P"]
+  if ( req.query.saison ){
+    saison = req.query.saison.split(',');
+  }
+  neo4japi.getSemestresAttendance( req.params.semestre, ["CS"], 5, saison).then( attendance => {
       if (!attendance) return;
       return res.json( attendance );
     }
   )
 })
 router.get("/semestres/:semestre/attendance/TM", function(req, res) {
-  neo4japi.getSemestresAttendance( req.params.semestre, ["TM"], 5 ).then( attendance => {
+  let saison = ["A", "P"]
+  if ( req.query.saison ){
+    saison = req.query.saison.split(',');
+  }
+  neo4japi.getSemestresAttendance( req.params.semestre, ["TM"], 5, saison ).then( attendance => {
       if (!attendance) return;
       return res.json( attendance );
     }
@@ -111,6 +119,11 @@ router.get("/graphs/branches", function(req, res) {
     req.filter.branches = _.intersection( _.split(req.query.branches, ','), config.branches);
   } else {
     req.filter.branches = config.branches;
+  }
+  if ( req.query.saison !== undefined ){
+    req.filter.saison = _.intersection(_.split(req.query.saison, ','), config.saison);
+  } else {
+    req.filter.saison = config.saison;
   }
 
   neo4japi.getGraphBranches(req.filter).then( graph => {

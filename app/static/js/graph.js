@@ -8,9 +8,15 @@ var edges = []
 
  // update the network
 
+ var filterBranch = [];
+ var filterType = [];
+ let saison = [];
+
 function updateGraph() {
-  var filterBranch = [];
-  var filterType = [];
+  $("#graph-preloader").show();
+  filterBranch = [];
+  filterType = [];
+  saison = [];
   if (!$("#node_branch_TC").hasClass("btn-flat")) {
     filterBranch.push("TC");
   }
@@ -35,19 +41,16 @@ function updateGraph() {
   if (!$("#node_branch_GB").hasClass("btn-flat")) {
     filterBranch.push("GB");
   }
-  var JSONadress;
-  if (filterType && filterBranch) {
-    JSONadress = "/api/v1/graphs/branches/?branches="+filterBranch+"&types="+filterType;
+
+  if (!$("#saison_A").hasClass("btn-flat")) {
+    saison.push("A");
   }
-  else if (filterType) {
-    JSONadress = "/api/v1/graphs/branches/?types="+filterType;
+  if (!$("#saison_P").hasClass("btn-flat")) {
+    saison.push("P");
   }
-  else if (filterBranch) {
-    JSONadress = "/api/v1/graphs/branches/?branches="+filterBranch;
-  }
-  else {
-    JSONadress = "/api/v1/graphs/branches";
-  }
+
+  var JSONadress = "/api/v1/graphs/branches/?branches="+filterBranch+"&types="+filterType+"&saison="+saison;
+  console.log(JSONadress)
   //JSONadress = "/api/v1/graphs/branches/?types=TSH"
   $.getJSON( JSONadress, function( data ) {
     var container = document.getElementById('mynetwork');
@@ -88,6 +91,7 @@ function updateGraph() {
     var dataNodes = {
       "nodes": data['nodes'], "edges": data['edges']
     };
+    $("#graph-preloader").fadeOut(100);
     network = new vis.Network(container, dataNodes, options);
     network.on("selectNode", function (params) {
       if (dataNodes.nodes[params.nodes[0]].shape == "box"){ // GX

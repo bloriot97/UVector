@@ -3,6 +3,7 @@ module.exports = {
     code: null,
     fullname: null,
     description: null,
-    branche: null
+    branche: null,
+    saison: null
   }
 }
