@@ -11,6 +11,8 @@ app.set('view engine', 'handlebars');
 app.use('/static/', [
     express.static(__dirname + '/node_modules/materialize-css/dist/'),
     express.static(__dirname + '/node_modules/jquery/dist/'),
+    express.static(__dirname + '/node_modules/chart.js/dist/'),
+    express.static(__dirname + '/node_modules/readmore-js/'),
     express.static(__dirname + '/static/'),
     express.static(__dirname + '/node_modules/vis/dist/'),
 
@@ -25,16 +27,16 @@ function setupDB(req, res){
 
   res.status(200).send("setup")
 }
-function calcGX(req, res){
+function calc(req, res){
   var sqlreader = require('./parser/sqlreader');
 
-  sqlreader.calcGX();
+  sqlreader.calc();
 
   res.status(200).send("calc")
 }
 
 app.use('/setup/db', setupDB)
-app.use('/setup/calc', calcGX)
+app.use('/setup/calc', calc)
 
 app.get('/', (req, res) => {
     res.render('index', {test: req.protocol + '://' + req.get('host') +req.originalUrl})

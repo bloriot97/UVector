@@ -18,5 +18,6 @@ module.exports = {
     GP: "#e74c3c",
     GX: "#888888"
   },
+  saison: ["A", "P"],
   types: ["CS", "TM", "TSH"]
 };

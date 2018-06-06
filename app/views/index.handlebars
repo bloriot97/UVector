@@ -16,6 +16,8 @@
     <script type="text/javascript" src="/static/vis.js"></script>
     <script type="text/javascript" src="/static/js/graph.js"></script>
     <script type="text/javascript" src="/static/js/materialize.min.js"></script>
+    <script type="text/javascript" src="/static/Chart.bundle.js"></script>
+
 </head>
 
 <body class="grey lighten-5" onload="updateGraph()">
@@ -66,10 +68,10 @@
     <!-- ================================================================== -->
 
 
-    <div class="row" id="menus">
+    <div id="menus">
 
         <!-- ===== Left Menu ===== -->
-          <div class="col s3 m3 l2">
+          <div class="left-menu">
               <div class="card" id="left-menu">
                   <ul class="collapsible" data-collapsible="expandable">
                       <li>
@@ -100,12 +102,9 @@
                                       <label class="truncate"><b>Catégories</b></label>
                                   </div>
                                   <div class="container center-align">
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les catégories" id="node_category_All_hide" onclick="reverse(false, false, false, false, false, false, false, false, false, true)"><i class="material-icons center-align">visibility_off</i></a></span>
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les catégories" id="node_category_All_show" onclick="reverse(false, false, false, false, false, false, false, false, false, true)"><i class="material-icons center-align">visibility_off</i></a></span>
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les CS" id="node_category_CS" onclick="reverse(false, false, false, false, false, false, false, true, false, false)">CS</a></span>
-                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les CS" id="node_category_CS_disabled" onclick="reverse(false, false, false, false, false, false, false, true, false, false)">CS</a></span>
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les TM" id="node_category_TM" onclick="reverse(false, false, false, false, false, false, true, false, false, false)">TM</a></span>
-                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les TM" id="node_category_TM_disabled" onclick="reverse(false, false, false, false, false, false, true, false, false, false)">TM</a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les catégories" id="node_category_All_hide" ><i class="material-icons center-align">visibility_off</i></a></span>
+                                      <span><a class="btn-floating UV_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les CS" id="node_category_CS" >CS</a></span>
+                                      <span><a class="btn-floating UV_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les TM" id="node_category_TM">TM</a></span>
 
                                   </div>
                               </div>
@@ -116,26 +115,35 @@
                                       <label class="truncate"><b>Branches</b><br/></label>
                                   </div>
                                   <div class="center-align container">
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les branches" id="node_branch_All_hide" onclick="reverse(false, false, false, false, false, false, false, false, true, false)"><i class="material-icons center-align">visibility_off</i></a></span>
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les branches" id="node_branch_All_show" onclick="reverse(false, false, false, false, false, false, false, false, true, false)"><i class="material-icons center-align">visibility_off</i></a></span>
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le TC" id="node_branch_TC" onclick="reverse(false, false, false, false, false, true, false, false, false, false)">TC</a></span>
-                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le TC" id="node_branch_TC_disabled" onclick="reverse(false, false, false, false, false, true, false, false, false, false)">TC</a></span>
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GSU" id="node_branch_GU" onclick="reverse(false, true, false, false, false, false, false, false, false, false)">GU</a></span>
-                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GSU" id="node_branch_GU_disabled" onclick="reverse(false, true, false, false, false, false, false, false, false, false)">GU</a></span>
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GP" id="node_branch_GP" onclick="reverse(false, false, false, true, false, false, false, false, false, false)">GP</a></span>
-                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GP" id="node_branch_GP_disabled" onclick="reverse(false, false, false, true, false, false, false, false, false, false)">GP</a></span>
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GB" id="node_branch_GB" onclick="reverse(false, false, true, false, false, false, false, false, false, false)">GB</a></span>
-                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GB" id="node_branch_GB_disabled" onclick="reverse(false, false, true, false, false, false, false, false, false, false)">GB</a></span>
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GM" id="node_branch_IM" onclick="reverse(false, false, false, false, true, false, false, false, false, false)">IM</a></span>
-                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GM" id="node_branch_IM_disabled" onclick="reverse(false, false, false, false, true, false, false, false, false, false)">IM</a></span>
-                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI" onclick="reverse(true, false, false, false, false, false, false, false, false, false)">GI</a></span>
-                                      <span><a class="btn-floating center-align tooltipped btn-flat" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI_disabled" onclick="reverse(true, false, false, false, false, false, false, false, false, false)">GI</a></span>
-                                      <br> <br> <span><a class="btn center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Appliquer les changements" id="confirmBtn" onclick="updateGraph()">Confirm</a></span>
+                                      <span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les branches" id="node_branch_All_hide"><i class="material-icons center-align">visibility_off</i></a></span>
+                                      <span><a class="btn-floating GX_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le TC" id="node_branch_TC">TC</a></span>
+                                      <span><a class="btn-floating GX_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GSU" id="node_branch_GU">GU</a></span>
+                                      <span><a class="btn-floating GX_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GP" id="node_branch_GP">GP</a></span>
+                                      <span><a class="btn-floating GX_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GB" id="node_branch_GB">GB</a></span>
+                                      <span><a class="btn-floating GX_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GM" id="node_branch_IM">IM</a></span>
+                                      <span><a class="btn-floating GX_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement le GI" id="node_branch_GI">GI</a></span>
                                   </div>
+
+                              </div>
+
+                              <div class="row">
+                                  <div class="container section">  <!--class section is for top and bottom padding-->
+                                      <label class="truncate"><b> Saison </b></label>
+                                  </div>
+                                  <div class="container center-align">
+                                    <!--<span><a class="btn-floating center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher/Cacher toutes les semestres" id="saison_All_hide"><i class="material-icons center-align">visibility_off</i></a></span>-->
+
+                                      <span><a class="btn-floating Saison_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les CS" id="saison_A" >A</a></span>
+                                      <span><a class="btn-floating Saison_selection center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Afficher uniquement les TM" id="saison_P">P</a></span>
+
+                                  </div>
+                              </div>
+                              <div class="center-align container">
+                                  <span><button class="btn center-align tooltipped" data-position="bottom" data-delay="1300" data-tooltip="Appliquer les changements" id="confirmBtn" onclick="updateGraph()">Confirmer</button></span>
                               </div>
                           </div>
                       </li>
-                      <li>
+                      <!--<li>
                           <div class="collapsible-header" id="menu_parcours_header"><i class="material-icons">timeline</i><b class="truncate">Mes parcours</b></div>
                           <div class="collapsible-body">
                               <ul class="collection">
@@ -144,20 +152,77 @@
                                   <li class="collection-item"><div class="truncate">Ajouter un nouveau parcours<a href="#!" class="secondary-content"><i class="material-icons">playlist_add</i></a></div></li>
                               </ul>
                           </div>
-                      </li>
+                      </li>-->
                   </ul>
               </div>
           </div>
 
 
           <!-- ===== Right Menu ===== -->
-          <!-- <div class="col s3 m3 l3 push-s6 push-m6 push-l7">
-              <div class="card" id="right-menu">
-                  <div class="card" id="right-menu-infoUV">
-                      <ul class="collection"></ul>
+          <div class="right-menu">
+              <div class="card" id="right-menu-uv">
+                <div class="card">
+                  <div class="card-content ">
+                    <span class="card-title" id="uvCard-title">MT90</span>
                   </div>
-              </div> -->
+                  <div class="card-tabs">
+                    <ul class="tabs tabs-fixed-width">
+                      <li class="tab"><a class="active" href="#uvCard-info">Info</a></li>
+                      <li class="tab"><a href="#uvCard-stats">Stats</a></li>
+                    </ul>
+                  </div>
+                  <div class="card-content">
+                    <div id="uvCard-info">
+                      <p id="uvCard-description"> Premier volet du module initial de mathématiques de Tronc Commun. Il permet d'acquérir les bases indispensables à l'étude des fonctions d'une variable.</p>
+                      <p> Nombre de crédits : <span id="uvCard-credits">6</span> </p>
+                      <p> Type : <span id="uvCard-type">CS</span> </p>
+                      <p> Branche : <span id="uvCard-branche">GX</span> </p>
+                    </div>
+                    <div id="uvCard-stats">
+                      <canvas id="attendanceChart" width="100" height="100"></canvas>
+                    </div>
+                  </div>
+                  <!--<div class="card-action">
+                    <a href="#">This is a link</a>
+                  </div>-->
+                </div>
+              </div>
+              <div class="card" id="right-menu-gx">
+                <div class="card">
+                  <div class="card-content ">
+                    <span class="card-title">
+                      <span id="gxCard-title">GI01</span>
+                      <!-- Dropdown Structure
+                      <i class='dropdown-trigger material-icons right' href='#' data-target='dropdown1'>more_vert</a>
 
+
+                      <ul id='dropdown1' class='dropdown-content'>
+                        <li><a href="#!">one</a></li>
+                        <li><a href="#!">two</a></li>
+                      </ul>-->
+                    </span>
+
+                  </div>
+                  <div class="card-tabs">
+                    <ul class="tabs tabs-fixed-width">
+                      <li class="tab"><a class="active" href="#gxCard-cs">CS</a></li>
+                      <li class="tab"><a href="#gxCard-tm">TM</a></li>
+                    </ul>
+                  </div>
+                  <div class="card-content">
+                    <div id="gxCard-cs">
+                      <canvas id="attendanceChart" width="100" height="100"></canvas>
+                    </div>
+                    <div id="gxCard-tm">
+                      <canvas id="attendanceChart" width="100" height="100"></canvas>
+                    </div>
+                  </div>
+                  <!--<div class="card-action">
+                    <a href="#">This is a link</a>
+                  </div>-->
+                </div>
+              </div>
+          </div>
         </div>
 
 
@@ -172,19 +237,21 @@
     <!-- ====================  Loader for the graph ======================= -->
     <!-- ================================================================== -->
     <!-- Loader that appears while the graph is being processed -->
-    <!-- <div id="loader-wrapper">
-        <div class="preloader-wrapper big active" id="graph-loader">
-            <div class="spinner-layer spinner-blue-only">
-                <div class="circle-clipper left">
-                    <div class="circle"></div>
-                </div><div class="gap-patch">
-                    <div class="circle"></div>
-                </div><div class="circle-clipper right">
-                    <div class="circle"></div>
-                </div>
-            </div>
+
+    <div class="center" id="graph-preloader">
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-red-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
         </div>
+      </div>
     </div>
+
 
     <div class="fixed-action-btn" id="#action-button">
         <a class="btn-floating btn-large blue-grey darken-1">
@@ -195,7 +262,8 @@
             <li><a class="btn-floating blue-grey lighten-2 tooltipped" data-position="left" data-delay="500" data-tooltip="Zoomer" onclick="zoomIn(activeGraph)"><i class="material-icons">add</i></a></li>
             <li><a class="btn-floating blue-grey lighten-2 tooltipped" data-position="left" data-delay="500" data-tooltip="Ajuster" onclick="fitSize(activeGraph)"><i class="material-icons">fullscreen</i></a></li>
         </ul>
-    </div> -->
+    </div>
+
 
 
 
@@ -267,133 +335,186 @@
     <!-- ================================================================== -->
 
     <script type="text/javascript">
+    function showUvCard(uv){
+      $('#right-menu-gx').hide();
+      $('#right-menu-uv').show();
+      $.getJSON( "/api/v1/uvs/" + uv, data => {
+        $("#uvCard-title").text(data.code)
+        $("#uvCard-description").text(data.description)
+        $("#uvCard-branche").text(data.branche)
+
+      });
+      updateGraphAttendance(uv);
+    }
+    function showGxCard(gx){
+      $('#right-menu-gx').show();
+      $('#right-menu-uv').hide();
+      $("#gxCard-title").text(gx)
+      updateGxGraphAttendance(gx);
+    }
+    var attendanceChart;
+    var csAttendanceChart;
+    var tmAttendanceChart;
+
+    function updateGxGraphAttendance(gx){
+      options = {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            gridLines: {
+              display: false,
+            },
+          }],
+          yAxes: [{
+            ticks: {
+                beginAtZero: true
+            },
+            display: false
+          }],
+        },
+      }
+      $.getJSON( "/api/v1/semestres/" + gx + "/attendance/CS?saison=" + saison, data => {
+        attendance = data;
+        data = {
+            datasets: [{
+                data: Object.values(attendance),
+                backgroundColor: "#1abc9c"
+            }],
+
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: Object.keys(attendance)
+        };
+        var ctx = $("#gxCard-cs>#attendanceChart");
+        if ( csAttendanceChart ){
+          csAttendanceChart.destroy()
+        }
+        csAttendanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+      });
+      $.getJSON( "/api/v1/semestres/" + gx + "/attendance/TM?saison=" + saison, data => {
+        attendance = data;
+        data = {
+            datasets: [{
+                data: Object.values(attendance),
+                backgroundColor: "#1abc9c"
+            }],
+
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: Object.keys(attendance)
+        };
+        var ctx = $("#gxCard-tm>#attendanceChart");
+        if ( tmAttendanceChart ){
+          tmAttendanceChart.destroy()
+        }
+        tmAttendanceChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+      });
+    }
+
+    function updateGraphAttendance(uv){
+      $.getJSON( "/api/v1/uvs/" + uv + "/attendance", data => {
+        attendance = data;
+        colors_GX = {
+          TC: "#3498db",
+          GU: "#e67e22",
+          GI: "#1abc9c",
+          IM: "#f1c40f",
+          GB: "#9b59b6",
+          GP: "#e74c3c",
+          GX: "#888888"
+        }
+        color = Object.keys(attendance).map( GX => {
+          return colors_GX[GX]
+        })
+        data = {
+            datasets: [{
+                data: Object.values(attendance),
+                backgroundColor: color
+            }],
+
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: Object.keys(attendance)
+        };
+        var ctx = $("#uvCard-stats>#attendanceChart");
+        if ( attendanceChart ){
+          attendanceChart.destroy()
+        }
+        attendanceChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: data,
+            options: {}
+        });
+      });
+      //attendance = {"GU":0.02857142857142857,"GI":0.39365079365079364,"TC":0.0746031746031746,"GB":0.03968253968253968,"GP":0.08888888888888889,"IM":0.3746031746031746}
+
+    }
     // Init the select in cards
     $(document).ready(function(){
-        $('#node_branch_GI_disabled').hide();
-        $('#node_branch_GU_disabled').hide();
-        $('#node_branch_GB_disabled').hide();
-        $('#node_branch_GP_disabled').hide();
-        $('#node_branch_IM_disabled').hide();
-        $('#node_branch_TC_disabled').hide();
-        $('#node_category_TM_disabled').hide();
-        $('#node_category_CS_disabled').hide();
-        $('#node_branch_All_show').hide();
-        $('#node_category_All_show').hide();
-        // To disable buttons when clicking
-        $('#node_branch_GI').click(function(){
-          $('#node_branch_GI').hide();
-          $('#node_branch_GI_disabled').show();
-        });
-        $('#node_branch_GI_disabled').click(function(){
-          $('#node_branch_GI_disabled').hide();
-          $('#node_branch_GI').show();
-        });
-        $('#node_branch_GU').click(function(){
-          $('#node_branch_GU').hide();
-          $('#node_branch_GU_disabled').show();
-        });
-        $('#node_branch_GU_disabled').click(function(){
-          $('#node_branch_GU_disabled').hide();
-          $('#node_branch_GU').show();
-        });
-        $('#node_branch_GB').click(function(){
-          $('#node_branch_GB').hide();
-          $('#node_branch_GB_disabled').show();
-        });
-        $('#node_branch_GB_disabled').click(function(){
-          $('#node_branch_GB_disabled').hide();
-          $('#node_branch_GB').show();
-        });
-        $('#node_branch_GP').click(function(){
-          $('#node_branch_GP').hide();
-          $('#node_branch_GP_disabled').show();
-        });
-        $('#node_branch_GP_disabled').click(function(){
-          $('#node_branch_GP_disabled').hide();
-          $('#node_branch_GP').show();
-        });
-        $('#node_branch_IM').click(function(){
-          $('#node_branch_IM').hide();
-          $('#node_branch_IM_disabled').show();
-        });
-        $('#node_branch_IM_disabled').click(function(){
-          $('#node_branch_IM_disabled').hide();
-          $('#node_branch_IM').show();
-        });
-        $('#node_branch_TC').click(function(){
-          $('#node_branch_TC').hide();
-          $('#node_branch_TC_disabled').show();
-        });
-        $('#node_branch_TC_disabled').click(function(){
-          $('#node_branch_TC_disabled').hide();
-          $('#node_branch_TC').show();
-        });
-        $('#node_category_CS').click(function(){
-          $('#node_category_CS').hide();
-          $('#node_category_CS_disabled').show();
-        });
-        $('#node_category_CS_disabled').click(function(){
-          $('#node_category_CS_disabled').hide();
-          $('#node_category_CS').show();
-        });
-        $('#node_category_TM').click(function(){
-          $('#node_category_TM').hide();
-          $('#node_category_TM_disabled').show();
-        });
-        $('#node_category_TM_disabled').click(function(){
-          $('#node_category_TM_disabled').hide();
-          $('#node_category_TM').show();
-        });
-        $('#node_category_All_hide').click(function(){
-          $('#node_category_All_hide').hide();
-          $('#node_category_All_show').show();
-          $('#node_category_TM').hide();
-          $('#node_category_TM_disabled').show();
-          $('#node_category_CS').hide();
-          $('#node_category_CS_disabled').show();
-        });
-        $('#node_category_All_show').click(function(){
-          $('#node_category_All_show').hide();
-          $('#node_category_All_hide').show();
-          $('#node_category_TM').show();
-          $('#node_category_TM_disabled').hide();
-          $('#node_category_CS').show();
-          $('#node_category_CS_disabled').hide();
-        });
-        $('#node_branch_All_hide').click(function(){
-          $('#node_branch_All_show').show();
-          $('#node_branch_All_hide').hide();
-          $('#node_branch_TC').hide();
-          $('#node_branch_TC_disabled').show();
-          $('#node_branch_GI').hide();
-          $('#node_branch_GI_disabled').show();
-          $('#node_branch_GU').hide();
-          $('#node_branch_GU_disabled').show();
-          $('#node_branch_GB').hide();
-          $('#node_branch_GB_disabled').show();
-          $('#node_branch_GP').hide();
-          $('#node_branch_GP_disabled').show();
-          $('#node_branch_IM').hide();
-          $('#node_branch_IM_disabled').show();
-        });
-        $('#node_branch_All_show').click(function(){
-          $('#node_branch_All_show').hide();
-          $('#node_branch_All_hide').show();
-          $('#node_branch_TC').show();
-          $('#node_branch_TC_disabled').hide();
-          $('#node_branch_GI').show();
-          $('#node_branch_GI_disabled').hide();
-          $('#node_branch_GU').show();
-          $('#node_branch_GU_disabled').hide();
-          $('#node_branch_GB').show();
-          $('#node_branch_GB_disabled').hide();
-          $('#node_branch_GP').show();
-          $('#node_branch_GP_disabled').hide();
-          $('#node_branch_IM').show();
-          $('#node_branch_IM_disabled').hide();
-        });
+
+      $('#right-menu-gx').hide();
+      $('#right-menu-uv').hide();
+      // Chart
+
+
+        $(".UV_selection, .GX_selection, .Saison_selection").click( (element)=>{
+          $(element.currentTarget).toggleClass("btn-flat")
+          if ( $(element.currentTarget).hasClass("GX_selection") ){
+            if($(".GX_selection").hasClass("btn-flat")){
+              $("#node_branch_All_hide i").html("visibility")
+            } else {
+              $("#node_branch_All_hide i").html("visibility_off")
+            }
+          }
+          if ( $(element.currentTarget).hasClass("UV_selection") ){
+            if($(".UV_selection").hasClass("btn-flat")){
+              $("#node_category_All_hide i").html("visibility")
+            } else {
+              $("#node_category_All_hide i").html("visibility_off")
+            }
+          }
+        })
+
+        $("#saison_All_hide").click( (element) =>{
+          if(!$(".Saison_selection").hasClass("btn-flat")){
+            $(".Saison_selection").addClass("btn-flat")
+            $("#saison_All_hide i").html("visibility")
+
+          } else {
+            $(".Saison_selection").removeClass("btn-flat")
+            $("#saison_All_hide i").html("visibility_off")
+          }
+        })
+
+        $("#node_branch_All_hide").click( (element) =>{
+          if(!$(".GX_selection").hasClass("btn-flat")){
+            $(".GX_selection").addClass("btn-flat")
+            $("#node_branch_All_hide i").html("visibility")
+
+          } else {
+            $(".GX_selection").removeClass("btn-flat")
+            $("#node_branch_All_hide i").html("visibility_off")
+          }
+        })
+        $("#node_category_All_hide").click( (element) =>{
+          if(!$(".UV_selection").hasClass("btn-flat")){
+            $(".UV_selection").addClass("btn-flat")
+            $("#node_category_All_hide i").html("visibility")
+          } else {
+            $(".UV_selection").removeClass("btn-flat")
+            $("#node_category_All_hide i").html("visibility_off")
+          }
+        })
+
         // Hidding right panel
-        $('#right-menu').hide();
+
 
         $('select').material_select();
         $('.modal-trigger').leanModal({
