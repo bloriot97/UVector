@@ -250,7 +250,7 @@
     <!-- ================================================================== -->
 
     <!-- Modal for "a propos" -->
-    <!-- <div id="about-modal" class="modal modal-fixed-footer">
+    <div id="about-modal" class="modal modal-fixed-footer">
         <div class="modal-content">
             <h4>A propos</h4>
             <p>
@@ -264,7 +264,7 @@
         <div class="modal-footer">
             <a href="#!" class="modal-action modal-close waves-effect btn-flat">Fermer</a>
         </div>
-    </div> -->
+    </div>
 
     <!-- Modal for "options" -->
     <!-- <div id="options-modal" class="modal modal-fixed-footer">
@@ -499,6 +499,7 @@
             in_duration: 20, // Transition in duration
             out_duration: 20
         });*/
+        $('.modal').modal();
 
         $('.collapsible').collapsible({
             // A setting that changes the collapsible behavior to expandable instead of the default accordion style
@@ -534,12 +535,12 @@
 
         // Search
         $('#node-to-search').onEnter(function(){
-            searchNode(activeGraph, $(this).val());
+            searchNode(activeGraph, $(this).val().toUpperCase());
         });
 
         // Autocomplete
         $('#node-to-search').on('input', function(){
-            var search = $(this).val(),
+            var search = $(this).val().toUpperCase(),
             // Targeting matching and displayed nodes
             matchNodes = graphBipartite.tagsForSearchBar.filter(function(n){
                 var hidden = false,
@@ -570,7 +571,7 @@
 
         // On autocomplete element click
         $('#dropdown').on('click', 'li', function(e){
-            searchNode(activeGraph, $(this).find('a span.node').text());
+            searchNode(activeGraph, $(this).find('a span.node').text().toUpperCase());
         });
 
         // Hide autocomplete on click elsewhere

@@ -112,7 +112,7 @@ function updateGraph() {
     // Autocomplete
     $('#node-to-search').on('keyup', function(){
         console.log('input')
-        const search = data['nodes'].filter(node => node.label.startsWith($('#node-to-search').val())).slice(0, 5);
+        const search = data['nodes'].filter(node => node.label.startsWith($('#node-to-search').val().toUpperCase())).slice(0, 5);
 
         $('#dropdown').empty();
 
