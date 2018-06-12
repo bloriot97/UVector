@@ -9,12 +9,14 @@ var app = express();
 app.use(session({ secret: 'UVectorGivesYouDirection', cookie: { maxAge: 60000 }}))
 
 var hbs = exphbs.create({
+    defaultLayout: 'main',
     helpers: {
         ifnot: function(cond, opt) { return !cond ? opt.fn(this) : opt.inverse(this) }
     }
 })
 
 app.engine('handlebars', hbs.engine);
+
 app.set('view engine', 'handlebars');
 
 app.use('/static/', [

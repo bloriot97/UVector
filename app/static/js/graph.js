@@ -96,6 +96,13 @@ function updateGraph() {
     };
     $("#graph-preloader").fadeOut(100);
     network = new vis.Network(container, dataNodes, options);
+    network.on("selectNode", function (params) {
+      if (dataNodes.nodes[params.nodes[0]].shape == "box"){ // GX
+        showGxCard(dataNodes.nodes[params.nodes[0]].label)
+      } else { // UV
+        showUvCard(dataNodes.nodes[params.nodes[0]].label)
+      }
+    } );
     network.on( 'click', function(properties) {
         var ids = properties.nodes;
         var clickedNodes = data['nodes'][ids[0]];
