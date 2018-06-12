@@ -1,12 +1,14 @@
-#mynetwork {
-    width: 100%;
-    height: 100%;
-    position: absolute ;
+#vis-network {
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     height: 100%;
     margin: 0;
+}
+
+#searchbar {
+  width: 340px;
 }
 
 .center {
@@ -26,7 +28,7 @@
 }
 
 .left-menu {
-  width: 200px;
+  width: 250px;
   left: 7px;
   position: absolute;
 }
@@ -35,4 +37,12 @@
   width: 250px;
   right: 7px;
   position: absolute;
+}
+
+#menu_filtres_body{
+  padding-top: 2em;
+  padding-bottom: 2em;
+  padding-left: 0;
+  padding-right: 0;
+
 }

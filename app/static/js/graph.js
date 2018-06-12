@@ -53,9 +53,12 @@ function updateGraph() {
   console.log(JSONadress)
   //JSONadress = "/api/v1/graphs/branches/?types=TSH"
   $.getJSON( JSONadress, function( data ) {
-    var container = document.getElementById('mynetwork');
-    //console.log(data.groupes)
+    var container = document.getElementById('vis-network');
+    console.log(data.groupes)
     var options = {
+        layout: {
+            improvedLayout: false,
+        },
         nodes: {
             shape: 'dot',
             size: 25
@@ -99,8 +102,50 @@ function updateGraph() {
       } else { // UV
         showUvCard(dataNodes.nodes[params.nodes[0]].label)
       }
-
+    } );
+    network.on( 'click', function(properties) {
+        var ids = properties.nodes;
+        var clickedNodes = data['nodes'][ids[0]];
+        console.log('clicked nodes:', clickedNodes);
     });
+
+    // Autocomplete
+    $('#node-to-search').on('keyup', function(){
+        console.log('input')
+        const search = data['nodes'].filter(node => node.label.startsWith($('#node-to-search').val())).slice(0, 5);
+
+        $('#dropdown').empty();
+
+        if(search){
+            for (var i = 0; i < search.length; i++) {
+                name = '<span style="color: #9E9E9C;" class="truncate">' + search[i].label + '</span>';
+
+                $('#dropdown').append('<li><a href="#"><span class="node">' + name + '</span></a></li>');
+            }
+        }
+    });
+
+    // On autocomplete element click
+    $('#dropdown').on('click', 'li', function(e){
+        network.selectNodes([data['nodes'].find(node => node.label == $(this).find('a span.node').text()).id])
+
+        // network.zoomExtent();
+        // var nodePosition= {x: network.nodes[data['nodes'].find(node => node.label == $(this).find('a span.node').text()).id].x, y: network.nodes[data['nodes'].find(node => node.label == $(this).find('a span.node').text()).id].y};
+
+        // var canvasCenter = network.DOMtoCanvas({x:0.5 * network.frame.canvas.width,y:0.5 * network.frame.canvas.height});
+        // var translation = network._getTranslation();
+        // var requiredScale = 0.75;
+        // var distanceFromCenter = {x:canvasCenter.x - nodePosition.x,
+        //                             y:canvasCenter.y - nodePosition.y};
+
+        // network._setScale(requiredScale);
+        // network._setTranslation(translation.x + requiredScale * distanceFromCenter.x,translation.y + requiredScale * distanceFromCenter.y);
+        // network.redraw();
+
+        $('#node-to-search').val('')
+        $('#dropdown').empty();
+    });
+
     var dataBranches = data['genie'];
   });
   //console.log("Types=",filterType,"Branches=",filterBranch);
