@@ -252,14 +252,66 @@
     <!-- Modal for "a propos" -->
     <div id="about-modal" class="modal modal-fixed-footer">
         <div class="modal-content">
-            <h4>A propos</h4>
+            <h5 style="color: #218c74">Qu'est-ce que UVector ?</h5> <br>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et tincidunt diam, in ullamcorper ligula. Integer non dolor viverra, commodo dui vel, fringilla nunc. Donec vestibulum tortor dignissim, fermentum ex sit amet, facilisis neque. Aenean nec dictum sapien. Morbi lacinia nisi vel risus ultrices, sit amet egestas est pharetra. Cras aliquam tellus in dignissim vulputate. Phasellus blandit, odio lacinia pulvinar tincidunt, lorem magna scelerisque ex, at rutrum velit lectus quis metus. Morbi id erat non ipsum rutrum fermentum. Etiam at ipsum ultricies, convallis quam elementum, convallis leo. Pellentesque molestie diam eget efficitur rhoncus. Proin eget odio ornare, suscipit ante nec, faucibus sapien. Aliquam accumsan, dolor vitae rhoncus accumsan, ipsum dui lacinia turpis, id euismod sem neque non elit.
+                UVector est une web application vous permettant de visualiser les différentes UV de l'UTC
+                sous forme d'un graphe. Les UV sont liées au semestres auxquels les étudiants s'y sont inscrits.
+
             </p>
-            <br />
             <p>
-                Nam fringilla lacus quam, ac pretium libero blandit id. Nunc iaculis varius fringilla. Integer vehicula felis lacus, ut bibendum turpis fermentum non. Ut interdum sodales orci. Aenean hendrerit posuere vulputate. Maecenas faucibus odio ut ante egestas viverra. Proin pellentesque lorem vel erat feugiat rutrum. Ut eget lacus risus. Curabitur mattis sagittis arcu eget rhoncus.
+                Les noeuds représentent les différentes UV et leur couleur leur branche principale (ils seront en gris s'ils n'en possèdent pas).
             </p>
+            <p>
+                Les étiquettes représentent quant à elles les divers semestres réalisés pas les étudiants classés dans l'ordre chronologique.
+            </p>
+            <br>
+            <h5 style="color: #218c74">Comment l'utiliser ?</h5> <br>
+
+            <div class="row">
+              <div class="col s1"><i class="material-icons">touch_app</i></div>
+              <div class="col s11">Vous pouvez tirer sur les différents noeuds afin de mettre en évidence les liens qui les concernent.</div>
+            </div>
+
+            <div class="row">
+              <div class="col s1"><i class="material-icons">trending_up</i></div>
+              <div class="col s11">Vous pouvez cliquer sur une UV ou un semestre pour avoir de plus amples informations le/la concernant.</div>
+            </div>
+
+            <div class="row">
+              <div class="col s1"><i class="material-icons">filter_none</i></div>
+              <div class="col s11">Vous pouvez appliquer des filtres grâce au menu déroulant situé à gauche, comme la branche, le type d'UV ou encore la saison voulue.</div>
+            </div>
+
+            <div class="row">
+              <div class="col s1"><i class="material-icons">search</i></div>
+              <div class="col s11">Enfin, vous pouvez rechercher de manière spécifique une UV grâce à la barre de recherche située en haut de la page.</div>
+            </div>
+            <br>
+
+            <h5 style="color: #218c74">Notre technologie</h5><br>
+
+            <p>Pour la réalisation cette web application, nous avons opté pour l'utilisation de Node.js. En effet, c'est une plateforme logicielle libre, largement utilisée et moderne qui nous permet de gérer le côté serveur de l'application.</p>
+
+            <p><b>La base de données : </b>Afin d'insérer, stocker et récupérer nos données, nous avons utilisé la base de données non-relationelle orientée graphe Neo4J. Elle est donc optimisée pour ce type de données et nous donne un aperçu de l'ensemble avant même l'implémentation de l'application.</p>
+
+            <p><b>La librairie de visualisation : </b>Afin de représenter ces données sous forme de graphe au sein de l'application et en gérer les paramètres, nous avons utilisé la librairie Vis.js. Elle nous permet entre autres de régler la longueur ou l'épaisseur des liens, la taille des noeuds, leur couleur, leur label, le type de modélisation du graphe (nous avons ici opté pour du ForceAtlas2) et bien d'autres choses.</p>
+
+            <p><b>Le conteneur logiciel : </b>Afin d'optimiser le développement et la distribution du logiciel, nous avons choisi d'utiliser Docker. C'est un conteneur logiciel qui nous permet de rendre l'application fonctionelle et l'expérience utilisateur identique quelque soit la machine utilisée.</p>
+
+            <p><b>Les autres librairies : </b>Parmi les autres librairies utilisées pour ce projet, on pourra citer MaterializeCss et JQuery qui nous permettent de faire la mise en forme et l'interaction entre les divers éléments de l'application.</p>
+            <br>
+
+            <h5 style="color: #218c74">Le futur d'UVector</h5><br>
+
+            <p>A l'avenir, on pourra penser à changer de librairie de visualisation (D3.js serait un choix intéressant) et fournir à la base de données de plus amples informations afin d'étendre les possibilitées de l'application.</p>
+
+            <p>Par exemple, on pourra implémenter les résultats des élèves pour mettre en évidence certains patterns (facteurs de réussite à certaines UVs). On pourra aussi fournir les descriptions des UVs, leur taux de réussite et d'attribution afin de pouvoir les rendre disponibles à l'utilisateur (la fonction est actuellement disponible, mais les données manquent).
+            <br>Parmi les fonctions qui nous tenaient à coeur et qui représenteraient un outil de valeur pour les étudiants, on pourra citer la représentation des divers parcours en mettant en valeur les modèles courants ou les plus atypiques. On pourra également citer la fonction de planification de parcours (en incluant éventuellement les débouchés possibles).</p>
+
+            <p>Un lien avec les services de l'UTC seraient un vrai plus afin de pouvoir récupérer de plus amples données et s'assurer d'un contenu constament à jour.</p>
+
+            <h5 style="color: #218c74">Bonne utilisation !</h5><br>
+
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-action modal-close waves-effect btn-flat">Fermer</a>
