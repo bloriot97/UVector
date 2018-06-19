@@ -147,7 +147,7 @@
                   <div class="card-content">
                     <div id="uvCard-info">
                       <p id="uvCard-description"> Premier volet du module initial de mathématiques de Tronc Commun. Il permet d'acquérir les bases indispensables à l'étude des fonctions d'une variable.</p>
-                      <p> Nombre de crédits : <span id="uvCard-credits">6</span> </p>
+                      <!--<p> Nombre de crédits : <span id="uvCard-credits">6</span> </p>-->
                       <p> Type : <span id="uvCard-type">CS</span> </p>
                       <p> Branche : <span id="uvCard-branche">GX</span> </p>
                     </div>
@@ -311,10 +311,12 @@
     function showUvCard(uv){
       $('#right-menu-gx').hide();
       $('#right-menu-uv').show();
+      $('.tabs').tabs();
       $.getJSON( "/api/v1/uvs/" + uv, data => {
         $("#uvCard-title").text(data.code)
         $("#uvCard-description").text(data.description)
         $("#uvCard-branche").text(data.branche)
+        $("#uvCard-type").text(data.type)
 
       });
       updateGraphAttendance(uv);
@@ -322,6 +324,7 @@
     function showGxCard(gx){
       $('#right-menu-gx').show();
       $('#right-menu-uv').hide();
+      $('.tabs').tabs();
       $("#gxCard-title").text(gx)
       updateGxGraphAttendance(gx);
     }
@@ -432,8 +435,12 @@
     // Init the select in cards
     $(document).ready(function(){
 
+      console.log($('.tabs'))
+
+
       $('#right-menu-gx').hide();
       $('#right-menu-uv').hide();
+
       // Chart
 
 

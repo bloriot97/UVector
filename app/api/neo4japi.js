@@ -230,7 +230,7 @@ function getGraphBranches2(filter) {
             y_coord = -Math.sin((n-1)/(4) * 3.14) * size
           }
           // ajout du noeud de branche
-          nodes.push( {id: length, "label": gx, "group": gx.substring(0,2), x:x_coord, y:y_coord, fixed: true, size: 50, "shape": "box", "font": {"size":50} } )
+          nodes.push( {id: length, type:"GX", "label": gx, "group": gx.substring(0,2), x:x_coord, y:y_coord, fixed: true, size: 50, "shape": "box", "font": {"size":50} } )
 
           length = nodes.length;
         }
@@ -245,10 +245,10 @@ function getGraphBranches2(filter) {
           cnt = data[1].low;
 
           if ( uv[uv_node.code] === undefined){ // si le noeud n'a pas encore été ajouté
-            nodes.push( {id: length, "label": uv_node.code, size: 50, "value": uv_node.degree.low , "group": uv_node.branche} )
+            nodes.push( {id: length,type:"UV", "label": uv_node.code, size: 50, "value": uv_node.degree.low , "group": uv_node.branche} )
             uv[uv_node.code] = length; // set node id
           }
-          edges.push( {"from": uv[uv_node.code], "to": genie[gx],"color": {"color": "#dddddd", "highlight": config.branches_color[gx.substring(0,2)]} , value: cnt} )
+          edges.push( {"from": uv[uv_node.code], "to": genie[gx],  "value": data[0].low ,"color": {"color": "#dddddd", "highlight": config.branches_color[gx.substring(0,2)]}} )
           length = nodes.length;
         })
 

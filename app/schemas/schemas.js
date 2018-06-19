@@ -4,6 +4,7 @@ module.exports = {
     fullname: null,
     description: null,
     branche: null,
-    saison: null
+    saison: null,
+    type: null
   }
 }

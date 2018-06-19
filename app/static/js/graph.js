@@ -96,17 +96,30 @@ function updateGraph() {
     };
     $("#graph-preloader").fadeOut(100);
     network = new vis.Network(container, dataNodes, options);
+
     network.on("selectNode", function (params) {
-      if (dataNodes.nodes[params.nodes[0]].shape == "box"){ // GX
+      if (dataNodes.nodes[params.nodes[0]].type == "GX"){ // GX
         showGxCard(dataNodes.nodes[params.nodes[0]].label)
       } else { // UV
         showUvCard(dataNodes.nodes[params.nodes[0]].label)
       }
     } );
+
+    network.on("dragEnd", function (params) {
+      if (dataNodes.nodes[params.nodes[0]] != undefined){
+        if (dataNodes.nodes[params.nodes[0]].type == "GX"){ // GX
+          showGxCard(dataNodes.nodes[params.nodes[0]].label)
+        } else { // UV
+          showUvCard(dataNodes.nodes[params.nodes[0]].label)
+        }
+      }
+
+    } );
     network.on( 'click', function(properties) {
-        var ids = properties.nodes;
-        var clickedNodes = data['nodes'][ids[0]];
-        console.log('clicked nodes:', clickedNodes);
+        if (properties.edges.length == 0){
+          $('#right-menu-gx').hide();
+          $('#right-menu-uv').hide();
+        }
     });
 
     // Autocomplete
@@ -127,7 +140,14 @@ function updateGraph() {
 
     // On autocomplete element click
     $('#dropdown').on('click', 'li', function(e){
-        network.selectNodes([data['nodes'].find(node => node.label == $(this).find('a span.node').text()).id])
+        let node = data['nodes'].find(node => node.label == $(this).find('a span.node').text());
+        network.selectNodes([node.id])
+
+        if ( node.type == "GX" ){
+          showGxCard(node.label)
+        } else {
+          showUvCard(node.label)
+        }
 
         // network.zoomExtent();
         // var nodePosition= {x: network.nodes[data['nodes'].find(node => node.label == $(this).find('a span.node').text()).id].x, y: network.nodes[data['nodes'].find(node => node.label == $(this).find('a span.node').text()).id].y};
@@ -141,6 +161,8 @@ function updateGraph() {
         // network._setScale(requiredScale);
         // network._setTranslation(translation.x + requiredScale * distanceFromCenter.x,translation.y + requiredScale * distanceFromCenter.y);
         // network.redraw();
+
+
 
         $('#node-to-search').val('')
         $('#dropdown').empty();

@@ -106,9 +106,9 @@ function calcGX2(){
 
 function calcSaison(){
   var session = driver.session();
-  return session
-    .run( // WITH uv as uv, saison as saison, CASE WHEN prop < 0.05 THEN 0 WHEN prop > 0.95 THEN 1 END as prop 
-      "MATCH ()-[r]->(uv) WHERE left(r.GX, 2) IN ['TC','GI','IM','GU','GB','GP'] WITH uv as uv, left(r.codeSemestre,1) as saison WITH uv as uv, count(saison) as cnt, saison as saison WITH uv as uv, toFloat(cnt)/toFloat(uv.degree) as prop, saison as saison WITH uv as uv, collect(saison + ":" + toString(prop) ) as prop  SET uv.saison = prop")
+  return session // WITH uv as uv, saison as saison, CASE WHEN prop < 0.05 THEN 0 WHEN prop > 0.95 THEN 1 END as prop
+    .run(
+      "MATCH ()-[r]->(uv) WHERE left(r.GX, 2) IN ['TC','GI','IM','GU','GB','GP'] WITH uv as uv, left(r.codeSemestre,1) as saison WITH uv as uv, count(saison) as cnt, saison as saison WITH uv as uv, toFloat(cnt)/toFloat(uv.degree) as prop, saison as saison WITH uv as uv, collect(saison + ':' + toString(prop) ) as prop  SET uv.saison = prop")
     .then(result => {
       session.close();
       return result;
