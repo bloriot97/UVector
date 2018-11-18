@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "https://gitlab.utc.fr/jounelgu/UVector",
-  "author": "Guillaume Jounel",
+  "repository": "bloriot97/UVector",
+  "author": "Guillaume Jounel, Thibault Métais, Benjamin Loriot",
   "license": "ISC",
   "dependencies": {
     "chart.js": "^2.7.2",
